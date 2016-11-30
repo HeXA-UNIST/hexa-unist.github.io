@@ -1,0 +1,753 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="UNIST Computer Club. Hacker's eXciting Academy" />
+
+    <meta property="og:image" content="https://raw.githubusercontent.com/HeXA-UNIST/hexa-blog/master/source/img/hexa_logo.png" />
+
+
+  <meta name="keywords" content="l34p,exploit,gdb," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="이번 포스팅에서는 PEDA에는 어떤 기능들이 있는지, 실제로 어떤식으로 활용할 수 있는지에 대해 살펴보도록 하겠습니다.
+PEDA 기본 인터페이스  
+
+우선 PEDA의 기본적인 화면은 위와 같습니다.
+display 같은 걸 해주지 않으면 기본적으로 화면에 아무것도 안 나오는 gdb와 달리 PEDA는 기본적으로 현재 레지스터의 상태와 실행 중인 명령어와 그 주">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PEDA - How To Use">
+<meta property="og:url" content="http://hexa-unist.github.io/2015/02/26/PEDA-How-To-Use/index.html">
+<meta property="og:site_name" content="HeXA | UNIST Computer Club">
+<meta property="og:description" content="이번 포스팅에서는 PEDA에는 어떤 기능들이 있는지, 실제로 어떤식으로 활용할 수 있는지에 대해 살펴보도록 하겠습니다.
+PEDA 기본 인터페이스  
+
+우선 PEDA의 기본적인 화면은 위와 같습니다.
+display 같은 걸 해주지 않으면 기본적으로 화면에 아무것도 안 나오는 gdb와 달리 PEDA는 기본적으로 현재 레지스터의 상태와 실행 중인 명령어와 그 주">
+<meta property="og:image" content="http://hexa-unist.github.io/img/peda-how-to1.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/peda-how-to2.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/peda-how-to3.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/peda-how-to4.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/peda-how-to5.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/peda-how-to6.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/peda-how-to7.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/peda-how-to8.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/peda-how-to9.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/peda-how-to10.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/peda-how-to11.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/peda-how-to12.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/peda-how-to13.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/peda-how-to14.png">
+<meta property="og:updated_time" content="2016-11-30T06:03:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PEDA - How To Use">
+<meta name="twitter:description" content="이번 포스팅에서는 PEDA에는 어떤 기능들이 있는지, 실제로 어떤식으로 활용할 수 있는지에 대해 살펴보도록 하겠습니다.
+PEDA 기본 인터페이스  
+
+우선 PEDA의 기본적인 화면은 위와 같습니다.
+display 같은 걸 해주지 않으면 기본적으로 화면에 아무것도 안 나오는 gdb와 달리 PEDA는 기본적으로 현재 레지스터의 상태와 실행 중인 명령어와 그 주">
+<meta name="twitter:image" content="http://hexa-unist.github.io/img/peda-how-to1.png">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> PEDA - How To Use | HeXA | UNIST Computer Club </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">HeXA</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-members">
+          <a href="/members" rel="section">
+            <i class="menu-item-icon icon-next-members"></i> <br />
+            Members
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-seminar">
+          <a href="/seminar" rel="section">
+            <i class="menu-item-icon icon-next-seminar"></i> <br />
+            Seminar
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              PEDA - How To Use
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2015-02-26T00:17:00+09:00" content="2015-02-26">
+            2015-02-26
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+            &nbsp; | &nbsp;
+            <a href="/2015/02/26/PEDA-How-To-Use/#comments" itemprop="discussionUrl">
+              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/02/26/PEDA-How-To-Use/" itemprop="commentsCount"></span>
+            </a>
+          </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>이번 포스팅에서는 PEDA에는 어떤 기능들이 있는지, 실제로 어떤식으로 활용할 수 있는지에 대해 살펴보도록 하겠습니다.</p>
+<h2 id="PEDA-기본-인터페이스"><a href="#PEDA-기본-인터페이스" class="headerlink" title="PEDA 기본 인터페이스"></a>PEDA 기본 인터페이스</h2><p align="center"> <img src="/img/peda-how-to1.png" style="width: 80%;"> </p>
+
+<p>우선 PEDA의 기본적인 화면은 위와 같습니다.</p>
+<p>display 같은 걸 해주지 않으면 기본적으로 화면에 아무것도 안 나오는 gdb와 달리 PEDA는 기본적으로 현재 레지스터의 상태와 실행 중인 명령어와 그 주변 명령어들, 스택의 내용물 등을 표시해줍니다.</p>
+<p>특히나 정말 멋진 기능 중 하나는 포인터를 따라가서 그 내용물까지 보여주는 기능입니다.<br>위 그림에서 레지스터 부분이나 스택 부분을 보면 포인터를 따라가서 그 안의 내용까지 보여주는 걸 볼 수 있습니다. PEDA 짱짱맨!!</p>
+<p>그러면 이제 PEDA의 다양한 기능들을 하나씩 하나씩 들여다보겠습니다.</p>
+<h2 id="pdisas"><a href="#pdisas" class="headerlink" title="pdisas"></a>pdisas</h2><p align="center"> <img src="/img/peda-how-to2.png" style="width: 80%;"> </p>
+
+<p>pdisas는 gdb에서 쓰던 disas 명령어의 확장판입니다.</p>
+<p>위 그림을 보면 알 수 있듯이 pdisas를 사용하면 알록달록한! 컬러풀한! 가독성이 더 높아진 버전의 disas 결과물을 볼 수 있습니다. PEDA는 gdb의 확장이므로 물론 원래 gdb의 기능들도 모두 사용 가능합니다. 그래서 pdisas 와 disas를 위 그림처럼 비교해보면 확실히 pdisas가 컬러링이 잘 돼있어 가독성이 높은 걸 알 수 있습니다.</p>
+<h3 id="How-to-use"><a href="#How-to-use" class="headerlink" title="How to use"></a>How to use</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gdb-peda$ pdisas <span class="string">"Function Name"</span></div></pre></td></tr></table></figure>
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gdb-peda$ pdisas main</div></pre></td></tr></table></figure>
+<h2 id="context-code-register-stack"><a href="#context-code-register-stack" class="headerlink" title="context code / register / stack"></a>context code / register / stack</h2><p align="center"> <img src="/img/peda-how-to3.png" style="width: 80%;"> </p>
+
+<p>context 명령어는 별다른 기능이 아니라 맨 처음에 보여드렸던 PEDA 기본인터페이스 에서 code영역 register영역 stack영역을 따로 따로 볼 수 있는 기능입니다.</p>
+<h3 id="How-to-use-1"><a href="#How-to-use-1" class="headerlink" title="How to use"></a>How to use</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gdb-peda$ context <span class="string">"code/register/stack/all"</span> ( context 만 입력시엔 context all 과 같습니다. )</div></pre></td></tr></table></figure>
+<h3 id="Example-1"><a href="#Example-1" class="headerlink" title="Example"></a>Example</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">gdb-peda$ context</div><div class="line">gdb-peda$ context code</div><div class="line">gdb-peda$ context all</div></pre></td></tr></table></figure>
+<h2 id="session-save-restore"><a href="#session-save-restore" class="headerlink" title="session save / restore"></a>session save / restore</h2><p align="center"> <img src="/img/peda-how-to4.png" style="width: 80%;"> </p>
+
+<p>session 명령어! 정말 편리한 기능을 제공하는 명령어입니다.<br>기존 gdb에서는 열심히 분석하면서 break point도 걸어놓고 watch point도 걸어놓고 해 놓더라도 gdb를 껐다 다시 키면 전부 없어지는데 peda에서는 session이라는 명령어로 break point와 같은 설정들을 저장하고 불러오는게 가능합니다.</p>
+<p>위 그림에서도 맨 처음에 info b 를 했을때, “No breakpoints or watchpoints” 가 나오는데 session restore 명령어를 치고 난 후 info b 를 해보면 저장해 놓았던 설정들을 그대로 가져오는 것을 볼 수 있습니다. </p>
+<h3 id="How-to-use-2"><a href="#How-to-use-2" class="headerlink" title="How to use"></a>How to use</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">gdb-peda$ session save <span class="string">"파일이름"</span> ( 파일이름 생략시엔 peda-session-<span class="string">"실행파일이름"</span>.txt 로 저장 )</div><div class="line">gdb-peda$ session restore <span class="string">"파일이름"</span> ( 파일이름 생략시엔 peda-session-<span class="string">"실행파일이름"</span>.txt 로드 )</div></pre></td></tr></table></figure>
+<h3 id="Example-2"><a href="#Example-2" class="headerlink" title="Example"></a>Example</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">gdb-peda$ session save</div><div class="line">gdb-peda$ session restore</div><div class="line">gdb-peda$ session save MySession</div><div class="line">gdb-peda$ session restore MySession</div></pre></td></tr></table></figure>
+<h2 id="snapshot-save-restore"><a href="#snapshot-save-restore" class="headerlink" title="snapshot save / restore"></a>snapshot save / restore</h2><p>이것도 상당히 재밌는 기능인데, session 이 break point나 watch point 들을 저장하고 불러온다면 이 명령어는 아예 현재 디버깅중인 프로세스의 스냅샷을 찍어 저장하고 불러올수있게 합니다. 사용법은 session과 동일합니다.</p>
+<h2 id="vmmap"><a href="#vmmap" class="headerlink" title="vmmap"></a>vmmap</h2><p align="center"> <img src="/img/peda-how-to5.png" style="width: 80%;"> </p>
+
+
+<p>이 명령어는 현재 디버깅 중인 프로세스의 Virtual Memory MAP을 보여줍니다.<br>그냥 vmmap 만 입력할 시에는 vmmap all 과 같으며 위 그림과 같이 vmmap binary, vmmap stack 이런 식으로 특정 메모리 영역만 볼 수도 있습니다.</p>
+<p>원래 gdb로 했었더라면 현재 프로세스의 pid를 알아내고 shell cat /proc/“pid”/maps 를 해서 봐야 했을 텐데 PEDA를 사용하면 아주 간단하게 메모리 매핑 상태를 보는 게 가능합니다.</p>
+<p>여기서 추가적으로 더 나아가서 얘기하자면, vmmap stack을 사용해서 현재 stack의 권한을 보고 해당 바이너리가 NX가 걸렸는지 안 걸렸는지도 알 수 있습니다.</p>
+<h3 id="How-to-use-3"><a href="#How-to-use-3" class="headerlink" title="How to use"></a>How to use</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gdb-peda$ vmmap <span class="string">"all/binary/libc/stack/ld ..."</span> ( 인자를 생략할 시에는 vmmap all 과 같습니다. )</div></pre></td></tr></table></figure>
+<h3 id="Example-3"><a href="#Example-3" class="headerlink" title="Example"></a>Example</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">gdb-peda$ vmmap</div><div class="line">gdb-peda$ vmmap libc</div><div class="line">gdb-peda$ vmmap stack</div></pre></td></tr></table></figure>
+<h2 id="checksec"><a href="#checksec" class="headerlink" title="checksec"></a>checksec</h2><p align="center"> <img src="/img/peda-how-to6.png" style="width: 80%;"> </p>
+
+<p>이 명령어는 현재 바이너리에 걸려있는 보안 기법들을 보여줍니다. 사용법은 간단히 그냥 checksec을 입력하기만 하면됩니다. 근데 여기서 주의해야 할 게 다른 건 몰라도 여기서 표시되는 NX는 별로 신뢰하지 않는 게 좋습니다. 버그가 있는지는 몰라도 NX가 안 걸려있는데 걸려있다고 나온다던가… 이런 경우가 몇 번 있어서 통수 맞은 적이 있네요 ㅠㅠ</p>
+<p>그래서 밑에서 소개할 nxtest 라는 명령어 또는 vmmap stack과 같은 명령어로 다른방법을  사용해서 NX는 따로 체크해주시는게 좋을 것 같습니다.  </p>
+<h3 id="How-to-use-4"><a href="#How-to-use-4" class="headerlink" title="How to use"></a>How to use</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gdb-peda$ checksec</div></pre></td></tr></table></figure>
+<h2 id="nxtest"><a href="#nxtest" class="headerlink" title="nxtest"></a>nxtest</h2><p align="center"> <img src="/img/peda-how-to7.png" style="width: 80%;"> </p>
+
+
+<p>nxtest는 말그대로 NX 가 걸려있는지 테스트 해주는 명령어로 스택에 실행권한이 있는지 체크합니다. </p>
+<h3 id="How-to-use-5"><a href="#How-to-use-5" class="headerlink" title="How to use"></a>How to use</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gdb-peda$ nxtest</div></pre></td></tr></table></figure>
+<h2 id="procinfo-getpid"><a href="#procinfo-getpid" class="headerlink" title="procinfo / getpid"></a>procinfo / getpid</h2><p align="center"> <img src="/img/peda-how-to8.png" style="width: 80%;"> </p>
+
+<p>procinfo 는 현재 디버깅중인 프로세스의 정보를 위 그림과 같이 표시해 줍니다.<br>pid만 필요하다면 getpid 명령어를 사용하는걸로 pid만 얻을수도 있습니다.</p>
+<h3 id="How-to-use-6"><a href="#How-to-use-6" class="headerlink" title="How to use"></a>How to use</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">gdb-peda$ procinfo</div><div class="line">gdb-peda$ getpid</div></pre></td></tr></table></figure>
+<h2 id="elfsymbol"><a href="#elfsymbol" class="headerlink" title="elfsymbol"></a>elfsymbol</h2><p align="center"> <img src="/img/peda-how-to9.png" style="width: 80%;"> </p>
+
+
+<p>이게 또 참 편리한 기능인데, elfsymbol이라는 명령어로 현재 디버깅 중인 바이너리의 plt 주소, got 주소 등을 알 수 있습니다. exploit 코드를 작성할 때 got overwrite을 한다거나 got 주소를 leak 시켜온다거나 여러 가지의 상황에서 plt 주소와 got 주소가 필요한 경우가 종종 있는데 이럴때 elfsymbol 명령어를 이용하면 아주 쉽게 정보를 얻을 수 있습니다.</p>
+<h3 id="How-to-use-7"><a href="#How-to-use-7" class="headerlink" title="How to use"></a>How to use</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gdb-peda$ elfsymbol <span class="string">"symbol"</span> ( 인자를 생략하면 symbol들을 모두 보여줍니다. )</div></pre></td></tr></table></figure>
+<h3 id="Example-4"><a href="#Example-4" class="headerlink" title="Example"></a>Example</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">gdb-peda$ elfsymbol</div><div class="line">gdb-peda$ elfsymbol <span class="built_in">printf</span></div></pre></td></tr></table></figure>
+<h2 id="elfheader"><a href="#elfheader" class="headerlink" title="elfheader"></a>elfheader</h2><p align="center"> <img src="/img/peda-how-to10.png" style="width: 80%;"> </p>
+
+<p>elfheader 명령어는 현재 디버깅 중인 바이너리의 헤더 정보들을 보여줍니다. 이 기능도 exploit 코드를 작성할 때 종종 bss 영역의 주소가 필요하다거나 하는 경우가 있는데 이럴 때 사용하면 유용합니다.</p>
+<h3 id="How-to-use-8"><a href="#How-to-use-8" class="headerlink" title="How to use"></a>How to use</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gdb-peda$ elfheader</div></pre></td></tr></table></figure>
+<h3 id="Example-5"><a href="#Example-5" class="headerlink" title="Example"></a>Example</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">gdb-peda$ elfheader</div><div class="line">gdb-peda$ elfheader .bss</div></pre></td></tr></table></figure>
+<h2 id="find-searchmem"><a href="#find-searchmem" class="headerlink" title="find / searchmem"></a>find / searchmem</h2><p align="center"> <img src="/img/peda-how-to11.png" style="width: 80%;"> </p>
+
+<p>find와 searchmem 은 동일한 명령어로 아무거나 선호하는 걸로 사용하시면 되며, 이 명령어는 메모리 영역에서 특정 패턴을 찾아줍니다.<br>다양한 방법으로 응용될 수 있는데, 몇가지 예시를 들자면 위 그림과 같이 /bin/sh 문자열의 주소를 찾는다던가 특정 OPCODE를 메모리에서 찾는다던가 하는게 가능합니다.</p>
+<h3 id="How-to-use-9"><a href="#How-to-use-9" class="headerlink" title="How to use"></a>How to use</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gdb-peda$ find/searchmem <span class="string">"pattern"</span> <span class="string">"범위"</span> ( 범위부분을 생략하면 binary 영역으로 세팅 됩니다.)</div></pre></td></tr></table></figure>
+<h3 id="Example-6"><a href="#Example-6" class="headerlink" title="Example"></a>Example</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gdb-peda$ find /bin/sh libc</div></pre></td></tr></table></figure>
+<h2 id="ropgadget-ropsearch-dumprop"><a href="#ropgadget-ropsearch-dumprop" class="headerlink" title="ropgadget / ropsearch / dumprop"></a>ropgadget / ropsearch / dumprop</h2><p align="center"> <img src="/img/peda-how-to12.png" style="width: 80%;"> </p>
+
+<p>ropgadget 과 ropsearch 명령어는 ROP를 할 때 필요한 가젯들을 쉽게 찾을 수 있도록 도와주는 명령어입니다. ropgadget은 자주 쓰이는 가젯들인 pop-ret, leave-ret, add esp 와 같은 가젯들을 찾아줍니다. 또한 ropsearch는 원하는 특정 가젯을 찾을 수 있도록 도와줍니다. </p>
+<p>dumprop도 비슷한 명령어인데, 이 명령어는 특정 가젯을 찾기 보다 특정 메모리 영역에서 모든 가젯들을 보고 싶을 때 유용합니다. 하지만 ropsearch ‘’ binary 이런 식으로 사용하면 ropsearch 로도 dumprop와 비슷하게 사용할 수 있습니다.</p>
+<h3 id="How-to-use-10"><a href="#How-to-use-10" class="headerlink" title="How to use"></a>How to use</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">gdb-peda$ ropgadget binary/libc/vdso/all ... ( 인자를 생략하면 ropgadget binary 와 같습니다. )</div><div class="line">gdb-peda$ ropsearch <span class="string">"gadget"</span> <span class="string">"범위"</span> ( gadget 부분을 <span class="string">''</span> 로 빈 상태로 보내면 모든 가젯을 찾습니다. )</div><div class="line">gdb-peda$ dumprop <span class="string">"범위"</span> ( 인자를 생략하면 dumprop binary 와 같습니다. )</div></pre></td></tr></table></figure>
+<h3 id="Example-7"><a href="#Example-7" class="headerlink" title="Example"></a>Example</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">gdb-peda$ ropgadget</div><div class="line">gdb-peda$ ropgadget libc</div><div class="line">gdb-peda$ ropsearch <span class="string">"add esp, ?"</span> binary</div><div class="line">gdb-peda$ ropsearch <span class="string">"int 0x80"</span> libc</div><div class="line">gdb-peda$ ropsearch <span class="string">""</span> binary ( binary 범위에서 모든 가젯을 찾습니다. )</div><div class="line">gdb-peda$ ropsearch <span class="string">"pop ?"</span> 0x08048000 0x0804b000</div><div class="line">gdb-peda$ dumprop binary</div><div class="line">gdb-peda$ dumprop 0x08048000 0x0804b000</div></pre></td></tr></table></figure>
+<h2 id="jmpcall"><a href="#jmpcall" class="headerlink" title="jmpcall"></a>jmpcall</h2><p align="center"> <img src="/img/peda-how-to13.png" style="width: 80%;"> </p>
+
+<p>이 명령어도 ROP 할 때 유용한 가젯들을 찾아주는데, 그중 jmp와 call 가젯들을 전부 찾아줍니다. 그냥 jmpcall 만 입력하면 바이너리 영역 내의 모든 jmp, call 가젯들을 찾아주며 jmpcall esp libc 처럼 특정 메모리 영역 내의 특정 jmp, call 가젯들만 찾을 수도 있습니다.</p>
+<h3 id="How-to-use-11"><a href="#How-to-use-11" class="headerlink" title="How to use"></a>How to use</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gdb-peda$ jmpcall <span class="string">"register"</span> <span class="string">"범위"</span> (인자들을 모두 생략하면 jmpcall <span class="string">""</span> binary 와 같으며, 바이너리 영영 내 모든 jmp, call 가젯들을 찾아줍니다.)</div></pre></td></tr></table></figure>
+<h3 id="Example-8"><a href="#Example-8" class="headerlink" title="Example"></a>Example</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">gdb-peda$ jmpcall</div><div class="line">gdb-peda$ jmpcall <span class="string">""</span> libc</div><div class="line">gdb-peda$ jmpcall esp libc</div><div class="line">gdb-peda$ jmpcall [eax] libc</div><div class="line">gdb-peda$ jmpcall eax ( jmpcall eax binary 와 같습니다. )</div></pre></td></tr></table></figure>
+<h2 id="shellcode"><a href="#shellcode" class="headerlink" title="shellcode"></a>shellcode</h2><p align="center"> <img src="/img/peda-how-to14.png" style="width: 80%;"> </p>
+
+<p>PEDA에는 기본적으로 제공해주는 쉘코드가 몇 가지 있는데 shellcode generate 란 명령어로 현재 가능한 쉘코드 종류를 볼 수 있고, shellcode generate x86/linux exec 이런 식으로 지정하여 필요한 쉘코드를 바로바로 얻을 수도 있습니다.</p>
+<p>현재 PEDA에 기본적으로 내장되어 있는 쉘코드는 x86/linux, bsd 뿐이지만 shellcode search나 display로 쉘코드를 웹에서 가져올 수도 있습니다.</p>
+<h3 id="Example-9"><a href="#Example-9" class="headerlink" title="Example"></a>Example</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gdb-peda$ shellcode generate x86/linux <span class="built_in">exec</span></div></pre></td></tr></table></figure>
+<p>이 외에도 PEDA는 많은 기능들을 제공하는데, PEDA에서 제공하는 다른 기능들도 살펴보시고 싶으시면, phelp 또는 peda help 를 입력하셔서 쭉 훑어보시면 됩니다.</p>
+<p>PEDA 명령어나 명령어 활용법에 대해 다른 참고할만한 자료 및 사이트</p>
+<ol>
+<li><a href="http://ropshell.com/peda/Linux_Interactive_Exploit_Development_with_GDB_and_PEDA_Slides.pdf" target="_blank" rel="external">http://ropshell.com/peda/Linux_Interactive_Exploit_Development_with_GDB_and_PEDA_Slides.pdf</a></li>
+<li><a href="http://security.cs.pub.ro/hexcellents/wiki/kb/toolset/peda" target="_blank" rel="external">http://security.cs.pub.ro/hexcellents/wiki/kb/toolset/peda</a></li>
+</ol>
+<p>수정할 내용이나 더 추가할 내용이 있다면 알려주세요!</p>
+<p>작성자: <a href="https://github.com/L34p/" target="_blank" rel="external">l34p</a></p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/l34p/" rel="tag">#l34p</a>
+          
+            <a href="/tags/exploit/" rel="tag">#exploit</a>
+          
+            <a href="/tags/gdb/" rel="tag">#gdb</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/02/27/club-auto-system/" rel="prev">동아리 활동 내역서 자동 생성 사이트</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/25/PEDA-Introduction-Installation/" rel="next">PEDA - Introduction && Installation</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div id="disqus_thread">
+                <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/img/hexa_logo.png" alt="HeXA" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">HeXA</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">UNIST Computer Club. Hacker's eXciting Academy</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">categories</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-name">tags</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#PEDA-기본-인터페이스"><span class="nav-number">1.</span> <span class="nav-text">PEDA 기본 인터페이스</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pdisas"><span class="nav-number">2.</span> <span class="nav-text">pdisas</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-use"><span class="nav-number">2.1.</span> <span class="nav-text">How to use</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example"><span class="nav-number">2.2.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#context-code-register-stack"><span class="nav-number">3.</span> <span class="nav-text">context code / register / stack</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-use-1"><span class="nav-number">3.1.</span> <span class="nav-text">How to use</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-1"><span class="nav-number">3.2.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#session-save-restore"><span class="nav-number">4.</span> <span class="nav-text">session save / restore</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-use-2"><span class="nav-number">4.1.</span> <span class="nav-text">How to use</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-2"><span class="nav-number">4.2.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#snapshot-save-restore"><span class="nav-number">5.</span> <span class="nav-text">snapshot save / restore</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vmmap"><span class="nav-number">6.</span> <span class="nav-text">vmmap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-use-3"><span class="nav-number">6.1.</span> <span class="nav-text">How to use</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-3"><span class="nav-number">6.2.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#checksec"><span class="nav-number">7.</span> <span class="nav-text">checksec</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-use-4"><span class="nav-number">7.1.</span> <span class="nav-text">How to use</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nxtest"><span class="nav-number">8.</span> <span class="nav-text">nxtest</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-use-5"><span class="nav-number">8.1.</span> <span class="nav-text">How to use</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#procinfo-getpid"><span class="nav-number">9.</span> <span class="nav-text">procinfo / getpid</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-use-6"><span class="nav-number">9.1.</span> <span class="nav-text">How to use</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#elfsymbol"><span class="nav-number">10.</span> <span class="nav-text">elfsymbol</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-use-7"><span class="nav-number">10.1.</span> <span class="nav-text">How to use</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-4"><span class="nav-number">10.2.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#elfheader"><span class="nav-number">11.</span> <span class="nav-text">elfheader</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-use-8"><span class="nav-number">11.1.</span> <span class="nav-text">How to use</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-5"><span class="nav-number">11.2.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#find-searchmem"><span class="nav-number">12.</span> <span class="nav-text">find / searchmem</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-use-9"><span class="nav-number">12.1.</span> <span class="nav-text">How to use</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-6"><span class="nav-number">12.2.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ropgadget-ropsearch-dumprop"><span class="nav-number">13.</span> <span class="nav-text">ropgadget / ropsearch / dumprop</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-use-10"><span class="nav-number">13.1.</span> <span class="nav-text">How to use</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-7"><span class="nav-number">13.2.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jmpcall"><span class="nav-number">14.</span> <span class="nav-text">jmpcall</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-use-11"><span class="nav-number">14.1.</span> <span class="nav-text">How to use</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-8"><span class="nav-number">14.2.</span> <span class="nav-text">Example</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shellcode"><span class="nav-number">15.</span> <span class="nav-text">shellcode</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-9"><span class="nav-number">15.1.</span> <span class="nav-text">Example</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HeXA</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'hexa-unist';
+      var disqus_identifier = '2015/02/26/PEDA-How-To-Use/';
+      var disqus_title = 'PEDA - How To Use';
+      var disqus_url = 'http://hexa-unist.github.io/2015/02/26/PEDA-How-To-Use/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        console.log((document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq));
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

