@@ -24,7 +24,7 @@ comments: false
 - 이창민 (ulistar93)
 - 이지수 (chorista)
 - 최성용 (sychoi1996) : M.S. candidate in UNIST C.S.
-- 유인완 (iwyoo) : Software Engineer at Lunit
+- 유인완 (iwyoo) : Research Engineer at Lunit
 - 전기영 (freestar0501) : Ph.D. candidate in UNIST C.S.
 - 김승호 (isho)
 - 박상대 (dad0100)
@@ -71,7 +71,7 @@ comments: false
 
 ## 2nd
 
-- 김태훈 ([carpedm20](http://carpedm20.github.io/)) : Software Engineer at OpenAI 
+- 김태훈 ([carpedm20](http://carpedm20.github.io/)) : Research Engineer at [OpenAI](https://openai.com)
 - 정의진 (nuguzi7) : M.S. candidate in UNIST C.S.
 - 조재휘 (jjh94210)
 
