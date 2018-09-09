@@ -77,15 +77,15 @@ comments: false
 
 ## 1st
 
-- 고건일 (hanulgoh)
-- 곽재원 ([sovi](https://kr.linkedin.com/pub/jaewon-kwak/93/a40/113)) : M.S. candidate in UNIST C.S.
+- 고건일 (hanulgoh) : Software Engineer at Nexon
+- 곽재원 ([sovi](https://kr.linkedin.com/pub/jaewon-kwak/93/a40/113)) : Software Engineer at Naver
 - 김연근 ([shoutnk](http://nss.kaist.ac.kr/)) : Ph.D. candidate in KAIST
 - 이시몬 (simon)
-- 이승용 (furymonkey)
+- 이승용 (furymonkey) : Software Engineer at Bluehole
 - 조재민 (silvara) : M.S. candidate in UNIST C.S.
 - 한충우 ([tunz](http://blog.tunz.kr/)) : M.S. candidate in KAIST C.S.
-- 우민규 (dnalsrb7)
-- 이승현 (lsh8482)
+- 우민규 ([mgwoo](http://mgwoo.github.io/)) : Ph.D. candidate in UCSD C.S.
+- 이승현 (lsh8482) : M.S. candidate in UNIST E.E.
 
 ## Presidents
 
