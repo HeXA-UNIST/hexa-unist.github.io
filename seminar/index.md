@@ -2,6 +2,7 @@ title: Seminar
 date: 2015-08-05 07:48:15
 comments: false
 ---
+- 2017\.09\. [[보안 PARTNER DAY] 모바일게임 리소스 보안](https://www.slideshare.net/ssuser2ced101/partner-day-85254729) - [김동민]
 - 2016\.10\. [[DEVIEW 2016] 딥러닝과 강화 학습으로 나보다 잘하는 쿠키런 AI 구현하기](http://www.slideshare.net/carpedm20/ai-67616630) - [김태훈][2]
 - 2016\.08\. [[PyCon APAC 2016] 지적 대화를 위한 깊고 넓은 딥러닝](http://www.slideshare.net/carpedm20/pycon-korea-2016) - [김태훈][2]
 - 2016\.06\. [[TensorFlow Korea] 텐서플로우 설치도 했고 튜토리얼도 봤고 기초 예제도 짜봤다면](http://www.slideshare.net/carpedm20/ss-63116251) - [김태훈][2]
