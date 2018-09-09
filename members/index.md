@@ -23,9 +23,9 @@ comments: false
 - 이송이 (rookie)
 - 이창민 (ulistar93)
 - 이지수 (chorista)
-- 최성용 (sychoi1996)
-- 유인완 (iwyoo) : M.S. candidate in UNIST C.S.
-- 전기영 (freestar0501) : M.S. candidate in UNIST C.S.
+- 최성용 (sychoi1996) : M.S. candidate in UNIST C.S.
+- 유인완 (iwyoo) : Software Engineer at Lunit
+- 전기영 (freestar0501) : Ph.D. candidate in UNIST C.S.
 - 김승호 (isho)
 - 박상대 (dad0100)
 - 손수민 (ty79450)
@@ -58,7 +58,7 @@ comments: false
 - 최준원 (cdk5801)
 - 임정택 (wjdxor0405)
 - 양홍준 (yhj0428)
-- 한명균 (hmg0228)
+- 한명균 (hmg0228) : M.S. candidate in UNIST C.S.
 - 이기웅 (sopp0002)
 - 김기철 (ds3nyi)
 - 김민규 (kimmg0008)
@@ -71,7 +71,7 @@ comments: false
 
 ## 2nd
 
-- 김태훈 ([carpedm20](http://carpedm20.github.io/)) : Software Engineer at Devsisters
+- 김태훈 ([carpedm20](http://carpedm20.github.io/)) : Software Engineer at OpenAI 
 - 정의진 (nuguzi7) : M.S. candidate in UNIST C.S.
 - 조재휘 (jjh94210)
 
