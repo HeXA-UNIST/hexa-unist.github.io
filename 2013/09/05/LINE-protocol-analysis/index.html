@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hexa-unist.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.11.1","exturl":false,"sidebar":{"position":"left","display":"remove","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Let’s send a messageIf you need a python code right away, then please keep in touch with https:&#x2F;&#x2F;github.com&#x2F;carpedm20&#x2F;LINE After I analyzed LOCO protocol of KakaoTalk, I’ve been curious about the oper">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LINE(라인) protocol analysis">
+<meta property="og:url" content="http://hexa-unist.github.io/2013/09/05/LINE-protocol-analysis/index.html">
+<meta property="og:site_name" content="HeXA">
+<meta property="og:description" content="Let’s send a messageIf you need a python code right away, then please keep in touch with https:&#x2F;&#x2F;github.com&#x2F;carpedm20&#x2F;LINE After I analyzed LOCO protocol of KakaoTalk, I’ve been curious about the oper">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://hexa-unist.github.io/img/line1.jpg">
+<meta property="og:image" content="http://hexa-unist.github.io/img/line2.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/line3.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/line4.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/line5.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/line6.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/line7.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/line8.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/line9.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/line10.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/line11.png">
+<meta property="article:published_time" content="2013-09-05T01:10:26.000Z">
+<meta property="article:modified_time" content="2024-12-31T03:10:03.430Z">
+<meta property="article:author" content="HeXA">
+<meta property="article:tag" content="reverse engineering">
+<meta property="article:tag" content="carpedm20">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://hexa-unist.github.io/img/line1.jpg">
+
+
+<link rel="canonical" href="http://hexa-unist.github.io/2013/09/05/LINE-protocol-analysis/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://hexa-unist.github.io/2013/09/05/LINE-protocol-analysis/","path":"2013/09/05/LINE-protocol-analysis/","title":"LINE(라인) protocol analysis"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>LINE(라인) protocol analysis | HeXA</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">HeXA</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-circle-info fa-fw"></i>About</a></li><li class="menu-item menu-item-members"><a href="/members/" rel="section"><i class="fa fa-user fa-fw"></i>Members</a></li><li class="menu-item menu-item-seminar"><a href="/seminar/" rel="section"><i class="fa fa-microphone fa-fw"></i>Seminar</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://hexa-unist.github.io/2013/09/05/LINE-protocol-analysis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="HeXA">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HeXA">
+      <meta itemprop="description" content="UNIST Computer Club. Hacker's eXciting Academy">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="LINE(라인) protocol analysis | HeXA">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          LINE(라인) protocol analysis
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2013-09-05 10:10:26" itemprop="dateCreated datePublished" datetime="2013-09-05T10:10:26+09:00">2013-09-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-12-31 12:10:03" itemprop="dateModified" datetime="2024-12-31T12:10:03+09:00">2024-12-31</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Let’s-send-a-message"><a href="#Let’s-send-a-message" class="headerlink" title="Let’s send a message"></a>Let’s send a message</h1><p><em>If you need a python code right away, then please keep in touch with <a target="_blank" rel="noopener" href="https://github.com/carpedm20/LINE">https://github.com/carpedm20/LINE</a></em></p>
+<p>After I analyzed <a target="_blank" rel="noopener" href="http://carpedm20.blogspot.kr/2013/08/python-wrapper-for-loco-protocol.html">LOCO protocol</a> of KakaoTalk, I’ve been curious about the operation of other messaging applications. Like KakaoTalk, <a target="_blank" rel="noopener" href="http://line.naver.jp/">LINE</a> is the instant messaging application on smartphones and PCs. LINE is not popular in Korea, but media currently said that LINE is one of the most popular messaging app in Japan. So, I decided to analyze the protocol of LINE and I’ll record the steps that I followed in this post. My final goal is to implement the LINE protocol in python, especially sending and receiving messages.</p>
+<p align="center"> <img src="/img/line1.jpg" style="width: 20%;"/> </p>
+
+<h2 id="1-Download-xap-file"><a href="#1-Download-xap-file" class="headerlink" title="1. Download xap file"></a>1. Download xap file</h2><p>First of all, I needed a xap file of LINE windows mobile application, so I searched it on Google.</p>
+<p align="center"> <img src="/img/line2.png" style="width: 80%;"/> </p>
+
+<p>Finally, I found the old version of LINE xap file (version : 1.7.0.71). The latest version of windows LINE application is <a target="_blank" rel="noopener" href="http://www.windowsphone.com/en-us/store/app/line/a18daaa9-9a1c-4064-91dd-794644cd88e7">2.7.0.155</a>.</p>
+<h2 id="2-Unzip-xap-file"><a href="#2-Unzip-xap-file" class="headerlink" title="2. Unzip xap file"></a>2. Unzip xap file</h2><p align="center"> <img src="/img/line3.png" style="width: 80%;"/> </p>
+
+<p>The first thing that attracted me was ‘Line.dll’ file and I guessed it may have core functions for the chat protocol. And also, I could see ‘Thrift.dll’ which is the library for <a target="_blank" rel="noopener" href="http://thrift.apache.org/">Thrift framework</a>. After I searched Google for a moment, I found that Thrift is an open source project for cross-language service built by <a target="_blank" rel="noopener" href="http://apache.org/">Apache</a>.</p>
+<p>Now, I knew LINE uses Thrift library for network communication, which is not their own protocol, so I thought it might be easy to implement LINE chat system (compare to LOCO protocol).</p>
+<h2 id="3-Packet-Analysis"><a href="#3-Packet-Analysis" class="headerlink" title="3. Packet Analysis"></a>3. Packet Analysis</h2><p>Before I did the static analysis, I used <a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/download/details.aspx?id=43719">Windows mobile phone emulator</a> for the packet analysis. Of course, the network between application and server was encrypted using <code>https</code>. There were some packets which seem to be TCP protocol but I focused on the HTTP communication. After looked over the packet, I used <a target="_blank" rel="noopener" href="http://www.red-gate.com/products/dotnet-development/reflector/">.Net reflector</a> to see the real decompiled source code of applications.</p>
+<p align="center"> <img src="/img/line4.png" style="width: 80%;"/> </p>
+
+<p>I searched <code>https</code> as a string, changed them to <code>http</code>, and re-zipped the <code>xap</code> file. At this point, I found out that the DNS of main server for chat communication was <code>gm.line.naver.jp</code>. Especially, <code>gm.line.naver.jp/S3</code> is used for authorization and chat service for LINE.</p>
+<pre><code>http://gm.line.naver.jp/api/v3/TalkService.do for talkSession
+</code></pre>
+<p>Then, I could see the plain chat communication between server and client in the packets.</p>
+<p align="center"> <img src="/img/line5.png" style="width: 80%;"/> </p>
+
+<p>I’m not sure that HTTP is LINE’s main protocol, because LOCO protocol of KakaoTalk used their own packet structure which was encrypted with AES. As you can see, LINE doesn’t encrypt any messages, so I can see the <strong>plain message from packet</strong>. Also, <code>X-Line-Access</code>, which was included in the header, seems like a session key, so I was wonder whether the previous session can be used for communication or not. So I quickly wrote a dirty python code which send the exactly same packet to the server…</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line">__author__ = <span class="string">&#x27;carpedm20&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> urllib2</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">send</span>():</span><br><span class="line">    url = <span class="string">&#x27;http://gm.line.naver.jp/S3&#x27;</span></span><br><span class="line"></span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&#x27;POST&#x27;</span> : <span class="string">&#x27;/S3&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;X-Line-Application&#x27;</span> : <span class="string">&#x27;WINPHONE.1.7.0.71.WindowsPhone.7.10.7720&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;Referer&#x27;</span> : <span class="string">&#x27;file:///Applications/Install/???/Install/&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;Accept-Encoding&#x27;</span> : <span class="string">&#x27;identity&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;Content-Type&#x27;</span> : <span class="string">&#x27;application/x-thrift&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;Accept&#x27;</span> : <span class="string">&#x27;application/x-thrift&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;X-Line-Access&#x27;</span> : <span class="string">&#x27;???&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;Connection&#x27;</span> : <span class="string">&#x27;Keep-Alive&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;User-Agent&#x27;</span> : <span class="string">&#x27;WindowsPhone 1.7.0.71&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;HOST&#x27;</span> : <span class="string">&#x27;gm.line.naver.jp&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;Cache-Control&#x27;</span> : <span class="string">&#x27;no-cache&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    data=<span class="string">&#x27;\x80\x01\x00\x01\x00\x00\x00\x0b\x73\x65\x6e\x64\x4d\x65&#x27;</span> + \</span><br><span class="line">         <span class="string">&#x27;\x73\x73\x61\x67\x65\x00\x00\x00\x00\x08\x00\x01\x00\x00&#x27;</span> + \</span><br><span class="line">         <span class="string">&#x27;\x00\x00\x0c\x00\x02\x0b\x00\x02\x00\x00\x00\x21\x75\x30&#x27;</span> + \</span><br><span class="line">         <span class="string">&#x27;\x33\x39\x61\x31\x64\x39\x62\x33\x34\x35\x37\x61\x64\x39&#x27;</span> + \</span><br><span class="line">         <span class="string">&#x27;\x39\x35\x61\x66\x36\x36\x62\x34\x64\x64\x64\x30\x38\x30&#x27;</span> + \</span><br><span class="line">         <span class="string">&#x27;\x65\x36\x38\x0b\x00\x0a\x00\x00\x00\x06\x51\x77\x65\x71&#x27;</span> + \</span><br><span class="line">         <span class="string">&#x27;\x77\x65\x02\x00\x0e\x00\x00\x00&#x27;</span></span><br><span class="line"></span><br><span class="line">    request = urllib2.Request(url, data, headers)</span><br><span class="line">    response = urllib2.urlopen(request)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span> <span class="string">&quot;[*] Result &quot;</span></span><br><span class="line">    data = response.read()</span><br><span class="line">    <span class="built_in">print</span> data</span><br><span class="line">    <span class="comment">#data = json.loads(data ,encoding=&#x27;utf-8&#x27;)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    send()</span><br></pre></td></tr></table></figure>
+
+<p>It worked pretty well!</p>
+<p align="center"> <img src="/img/line6.png" style="width: 90%;"/> </p>
+
+
+<h1 id="HTTP-S-data"><a href="#HTTP-S-data" class="headerlink" title="HTTP(S) data"></a>HTTP(S) data</h1><p>Now, I decide to analyze the LINE protocol in more detail.</p>
+<h2 id="4-HTTP-S-Analysis"><a href="#4-HTTP-S-Analysis" class="headerlink" title="4. HTTP(S) Analysis"></a>4. HTTP(S) Analysis</h2><p align="center"> <img src="/img/line7.png" style="width: 80%;"/> </p>
+
+<p>There are two particular headers, one is <code>X-Line-Application</code> and the other is <code>X-Line-Access</code>. The first header, <code>X-Line-Application</code>, specify the kind of mobile phone, which is not that interesting one ;(</p>
+<p>However, the second header <code>X-Line-Access</code> seems like a session key and part of the key is encrypted by Base64. I’ll talk about this later. Anyway, after I decode the encrypted data, I can get <code>iat: 1378973334524</code> (string data) and <code>��&quot; [���&lt;Z� � 5wxwO�</code> (byte[] data)</p>
+<p align="center"> <img src="/img/line8.png" style="width: 90%;"/> </p>
+
+<p>The format of POST data seems like ‘bson’ string which is used in LOCO protocol but it isn’t. To find out how the application deals with the session key and what kind of data type is used for POST data, I used .NET Reflector again and find out some interesting functions like <code>send_sendMessage(int seq, Message message)</code>.</p>
+<p align="center"> <img src="/img/line9.png" style="width: 90%;"/> </p>
+
+<p>As you can see in this picture, there is a string <code>sendMessage</code> which also can be found in the POST data. Therefore, I guess that this <code>sendMessage</code> function makes the POST data. I also figure out that WriteMessageBegin() and WriteMessageEnd() are the functions for <strong>Thrift platform</strong>. I keep read some posts and decompiled codes to find out how Thrift works, but I can’t figure out the exact structure of Thrift HTTP protocol.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## VERSION of Thrift protocol ##</span></span><br><span class="line"><span class="comment"># TBinaryProtocol.VERSION_1 | type</span></span><br><span class="line">data = <span class="string">&#x27;\x80\x01\x00\x01&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## Function ##</span></span><br><span class="line"><span class="comment"># \x00\x00\x00\x0b : sendMessage</span></span><br><span class="line"><span class="comment"># \x00\x00\x00\x0f : fetchOperations, for read message</span></span><br><span class="line">data += <span class="string">&#x27;\x00\x00\x00\x0b&#x27;</span> <span class="comment"># length of function</span></span><br><span class="line">data += <span class="string">&#x27;sendMessage&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## Message information for static message ##</span></span><br><span class="line"><span class="comment">## (not include sticker information) ##</span></span><br><span class="line">data += <span class="string">&#x27;\x00\x00\x00\x00&#x27;</span></span><br><span class="line">data += <span class="string">&#x27;\x08\x00\x01\x00&#x27;</span></span><br><span class="line">data += <span class="string">&#x27;\x00\x00\x00\x0c&#x27;</span></span><br><span class="line">data += <span class="string">&#x27;\x00\x02\x0b\x00&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># \x01\x00\x00\x00 : from</span></span><br><span class="line"><span class="comment"># \x02\x00\x00\x00 : to</span></span><br><span class="line">data += <span class="string">&#x27;\x02\x00\x00\x00&#x27;</span> <span class="comment"># to</span></span><br><span class="line">data += <span class="string">&#x27;????&#x27;</span> <span class="comment"># chat id to send message</span></span><br><span class="line">data += <span class="string">&#x27;\x0b\x00\x0a&#x27;</span> <span class="comment"># ChatId footer</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## User input : not included in Thift protocol ##</span></span><br><span class="line">message = raw_input(<span class="string">&quot;&gt;&gt; &quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">## Length of message ##</span></span><br><span class="line"><span class="comment">#data += &#x27;\x00\x00\x00\x10&#x27; # \x06 : length</span></span><br><span class="line">data += struct.pack(<span class="string">&#x27;&gt;I&#x27;</span>,<span class="built_in">len</span>(message))</span><br><span class="line"></span><br><span class="line"><span class="comment">## Message ##</span></span><br><span class="line"><span class="comment">#for i in range(16):</span></span><br><span class="line"><span class="comment">#    data += chr(49 + i) # 65 : A, 49 : 1</span></span><br><span class="line">data += message</span><br><span class="line"></span><br><span class="line"><span class="comment">## Message footer ##</span></span><br><span class="line"><span class="comment">#data += &#x27;\x0a\x02\x00\x0e\x00\x00\x00&#x27;</span></span><br><span class="line">data += <span class="string">&#x27;\x02\x00\x0e\x00\x00\x00&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>The bellow picture is the structure of Thrift packet based on the packet analysis that I took. (which may include some errors)</p>
+<p align="center"> <img src="/img/line10.png" style="width: 50%;"/> </p>
+
+<p>And the bellow code is a short python code which can be used to send message to someone (not me).</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line">__author__ = <span class="string">&#x27;carpedm20&#x27;</span></span><br><span class="line"><span class="keyword">import</span> urllib2</span><br><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;http://gm.line.naver.jp/S3&#x27;</span></span><br><span class="line">headers = &#123; <span class="string">&#x27;POST&#x27;</span> : <span class="string">&#x27;/S3&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;X-Line-Application&#x27;</span> : <span class="string">&#x27;WINPHONE.1.7.0.71.WindowsPhone.7.10.7720&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Referer&#x27;</span> : <span class="string">&#x27;file:///Applications/Install/A18DAAA9-9A1C-4064-91DD-794644CD88E7/Install/&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Accept-Encoding&#x27;</span> : <span class="string">&#x27;identity&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Content-Type&#x27;</span> : <span class="string">&#x27;application/x-thrift&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Accept&#x27;</span> : <span class="string">&#x27;application/x-thrift&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;X-Line-Access&#x27;</span> : <span class="string">&#x27;????&#x27;</span>;</span><br><span class="line">    <span class="string">&#x27;Connection&#x27;</span> : <span class="string">&#x27;Keep-Alive&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;User-Agent&#x27;</span> : <span class="string">&#x27;WindowsPhone 1.7.0.71&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;HOST&#x27;</span> : <span class="string">&#x27;gm.line.naver.jp&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Cache-Control&#x27;</span> : <span class="string">&#x27;no-cache&#x27;</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">send</span>():</span><br><span class="line">    data = <span class="string">&#x27;\x80\x01\x00\x01\x00\x00\x00\x0b&#x27;</span></span><br><span class="line">    data += <span class="string">&#x27;sendMessage&#x27;</span></span><br><span class="line">    data += <span class="string">&#x27;\x00\x00\x00\x00\x08\x00\x01\x00\x00\x00\x00\x0c\x00\x02\x0b\x00\x02\x00\x00\x00&#x27;</span></span><br><span class="line">    data += <span class="string">&#x27;????&#x27;</span> <span class="comment"># chat id to send message</span></span><br><span class="line">    data += <span class="string">&#x27;\x0b\x00\x0a&#x27;</span></span><br><span class="line">    message = raw_input(<span class="string">&quot;&gt;&gt; &quot;</span>)</span><br><span class="line">    data += struct.pack(<span class="string">&#x27;&gt;I&#x27;</span>,<span class="built_in">len</span>(message))</span><br><span class="line">    data += message</span><br><span class="line">    data += <span class="string">&#x27;\x02\x00\x0e\x00\x00\x00&#x27;</span></span><br><span class="line"></span><br><span class="line">    request = urllib2.Request(url, data, headers)</span><br><span class="line">    response = urllib2.urlopen(request)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span> <span class="string">&quot;[*] Result &quot;</span></span><br><span class="line"></span><br><span class="line">    data = response.read()</span><br><span class="line">    <span class="keyword">for</span> d <span class="keyword">in</span> data:</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;%#x&quot;</span> % <span class="built_in">ord</span>(d),</span><br><span class="line">    <span class="built_in">print</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">read</span>():</span><br><span class="line">    data = <span class="string">&#x27;\x80\x01\x00\x01&#x27;</span> <span class="comment"># TBinaryProtocol.VERSION_1 | type</span></span><br><span class="line">    data += <span class="string">&#x27;\x00\x00\x00\x0f&#x27;</span></span><br><span class="line"></span><br><span class="line">    data += <span class="string">&#x27;fetchOperations&#x27;</span></span><br><span class="line">    data += <span class="string">&#x27;\x00\x00\x00\x00\x0a&#x27;</span></span><br><span class="line">    data += <span class="string">&#x27;\x00\x02\x00\x00\x00\x00\x00\x00\x00\xf9\x08\x00\x03\x00\x00\x00\x14\x00&#x27;</span></span><br><span class="line"></span><br><span class="line">    request = urllib2.Request(url, data, headers)</span><br><span class="line">    response = urllib2.urlopen(request)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span> <span class="string">&quot;[*] Result &quot;</span></span><br><span class="line"></span><br><span class="line">   </span><br><span class="line">    data = response.read()</span><br><span class="line">    <span class="keyword">for</span> d <span class="keyword">in</span> data:</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;%#x&quot;</span> % <span class="built_in">ord</span>(d),</span><br><span class="line">    <span class="built_in">print</span></span><br><span class="line">    <span class="built_in">print</span> data</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    send()</span><br></pre></td></tr></table></figure>
+
+<p>I can also figure out how to send an emoticon message through LINE. I wish I can send some emoticons, which I have to buy to use them, but it doesn’t worked with an error message <strong>“current user does not have this sticker”</strong> :(</p>
+<p>ps. you can send some charged emoticons in LOCO protocol for nothing :)</p>
+<p align="center"> <img src="/img/line11.png" style="width: 90%;"/> </p>
+
+
+<h1 id="Session-key"><a href="#Session-key" class="headerlink" title="Session key"></a>Session key</h1><p>Finally, I want to talk about session key  and auth key.</p>
+<h2 id="5-Session-key"><a href="#5-Session-key" class="headerlink" title="5. Session key"></a>5. Session key</h2><p>At first, I tried to follow UpdateAuthToken() function because this function adds the <code>X-Line-Access</code> header to the HTTP protocol. As I followed this function, I finally arrived to create() function which updates the old session key. It wasn’t hard to understand how this function updates authKey, but I couldn’t figure out when LINE change an auth key.</p>
+<p>It seems like LINE’s session key is changed when a user change his&#x2F;her mobile phone or re-install the application. In other words, the session key <strong>won’t be changed</strong> if you don’t erase or change your mobile phone. This can cause security problems if someone change the code of LINE application and distribute it to the internet…but I don’t think it will happen :)</p>
+<p>Bellow is the list of functions that I followed to find out how LINE update their authorization key.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">UpdateAuthToken</span>(<span class="params"><span class="built_in">string</span> authKey</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (authKey != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>._transport.AddRequestHeader(<span class="string">&quot;X-Line-Access&quot;</span>, AccessTokenHelper.GetAccessToken(authKey)); <span class="comment">// add &quot;X-Line-Access&quot; header to HTTP(s) protocol</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">UpdateAuthToken</span>(<span class="params"><span class="built_in">string</span> authKey</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (authKey != <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">this</span>._transport.AddRequestHeader(<span class="string">&quot;X-Line-Access&quot;</span>, AccessTokenHelper.GetAccessToken(authKey)); <span class="comment">// add &quot;X-Line-Access&quot; header to HTTP(s) protocol</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (Exception)</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> _addCustomHeader(HttpWebRequest httpWebRequest)</span><br><span class="line">&#123;</span><br><span class="line">    Profile current = ProfileViewModel.GetInstance().Current;</span><br><span class="line">    httpWebRequest.get_Headers().set_Item(<span class="string">&quot;X-Line-Access&quot;</span>, AccessTokenHelper.GetAccessToken(current.AuthKey)); <span class="comment">// add &quot;X-Line-Access&quot; header to HTTP(s) protocol</span></span><br><span class="line">    httpWebRequest.get_Headers().set_Item(<span class="string">&quot;X-Line-Application&quot;</span>, DeviceUtility.GetLineApplicationString());</span><br><span class="line">    httpWebRequest.get_Headers().set_Item(<span class="string">&quot;Cache-Control&quot;</span>, <span class="string">&quot;no-cache&quot;</span>);</span><br><span class="line">    httpWebRequest.get_Headers().set_Item(<span class="string">&quot;Pragma&quot;</span>, <span class="string">&quot;no-cache&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">string</span> <span class="title">GetAccessToken</span>(<span class="params"><span class="built_in">string</span> authKey</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">long</span> timestamp = (DateTime.get_UtcNow() - <span class="keyword">new</span> DateTime(<span class="number">0x7b2</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>)).get_TotalMilliseconds(); <span class="comment">// use time stamp for making access token</span></span><br><span class="line">    <span class="keyword">return</span> GetAccessToken(timestamp, authKey);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">string</span> <span class="title">GetAccessToken</span>(<span class="params"><span class="built_in">long</span> timestamp, <span class="built_in">string</span> authKey</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (((_accessToken == <span class="string">&quot;&quot;</span>) || !_accessToken.Equals(_lastAuthToken)) || (timestamp &gt; (_lastUpdated + <span class="number">0x5265c00</span>L)))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">lock</span> (_thisLock)</span><br><span class="line">        &#123;</span><br><span class="line">            _accessToken = Generate(authKey, timestamp);</span><br><span class="line">            _lastUpdated = timestamp;</span><br><span class="line">            _lastAuthToken = authKey;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> _accessToken;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">string</span> <span class="title">Generate</span>(<span class="params"><span class="built_in">string</span> authToken, <span class="built_in">long</span> timestamp</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">string</span>[] strArray = authToken.Split(<span class="keyword">new</span> <span class="built_in">char</span>[] &#123; <span class="string">&#x27;:&#x27;</span> &#125;);</span><br><span class="line">    <span class="keyword">if</span> (strArray.Length != <span class="number">2</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ArgumentException(<span class="string">&quot;authToken&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">string</span> issueTo = strArray[<span class="number">0</span>]; <span class="comment">// use previous authToken for the new authToken</span></span><br><span class="line">    <span class="built_in">string</span> encodedSecretKey = strArray[<span class="number">1</span>]; <span class="comment">// use previous authToken for the new authToken</span></span><br><span class="line">    <span class="built_in">string</span> str3 = YamlWebToken.Create(issueTo, timestamp, encodedSecretKey);</span><br><span class="line">    <span class="keyword">return</span> (issueTo + <span class="string">&quot;:&quot;</span> + str3);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">YamlWebToken</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Fields</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> HmacAlgorithm DEFAULT_ALOGORITHM; <span class="comment">// use Hmac algorith for generating token</span></span><br><span class="line">    <span class="comment">// Methods</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="title">YamlWebToken</span>()</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">YamlWebToken</span>()</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">string</span> <span class="title">Create</span>(<span class="params"><span class="built_in">string</span> issueTo, <span class="built_in">long</span> timestamp, <span class="built_in">string</span> encodedSecretKey</span>)</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">string</span> <span class="title">Create</span>(<span class="params"><span class="built_in">string</span> issuedTo, <span class="built_in">long</span> timestamp, <span class="built_in">string</span> encodedSecretKey, HmacAlgorithm algorithm</span>)</span>;</span><br><span class="line">    <span class="comment">// Nested Types</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HmacAlgorithm</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Methods</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">HmacAlgorithm</span>(<span class="params"><span class="built_in">string</span> name</span>)</span>;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HMAC <span class="title">CreateInstance</span>(<span class="params"><span class="built_in">string</span> name, <span class="built_in">byte</span>[] key</span>)</span>;</span><br><span class="line">        <span class="comment">// Properties</span></span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">string</span> Name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">string</span> <span class="title">Create</span>(<span class="params"><span class="built_in">string</span> issueTo, <span class="built_in">long</span> timestamp, <span class="built_in">string</span> encodedSecretKey</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> Create(issueTo, timestamp, encodedSecretKey, DEFAULT_ALOGORITHM);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">string</span> <span class="title">Create</span>(<span class="params"><span class="built_in">string</span> issuedTo, <span class="built_in">long</span> timestamp, <span class="built_in">string</span> encodedSecretKey, HmacAlgorithm algorithm</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">string</span> str = <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// core algorithm to make new session key</span></span><br><span class="line">        <span class="built_in">string</span> str2 = <span class="built_in">string</span>.Format(<span class="string">&quot;iat: &#123;1&#125;\n&quot;</span>, issuedTo, timestamp); </span><br><span class="line">        <span class="built_in">string</span> str3 = Convert.ToBase64String(Encoding.get_UTF8().GetBytes(str2));</span><br><span class="line">        <span class="built_in">string</span> str4 = <span class="built_in">string</span>.Empty;</span><br><span class="line">        <span class="built_in">string</span> str5 = str3 + <span class="string">&quot;.&quot;</span> + str4;</span><br><span class="line">        <span class="built_in">byte</span>[] key = Convert.FromBase64String(encodedSecretKey);</span><br><span class="line">        <span class="built_in">string</span> str6 = Convert.ToBase64String(HmacAlgorithm.CreateInstance(algorithm.Name, key).ComputeHash(Encoding.get_UTF8().GetBytes(str5)));</span><br><span class="line">        str = str5 + <span class="string">&quot;.&quot;</span> + str6; <span class="comment">// base64(issuedTo) + &#x27;..&#x27; + Hmac(SecretKey)</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (Exception)</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> str;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Anyway, I wrote an C# code that make updated session key… </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">using</span> System.Text;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">ConsoleApplication1</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line">            String issuedTo = <span class="string">&quot;1&quot;</span> ;</span><br><span class="line">            DateTime l = DateTime .UtcNow;</span><br><span class="line">            <span class="built_in">long</span> timestamp = (<span class="built_in">long</span> )((l - <span class="keyword">new</span> DateTime(<span class="number">1970</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>)).TotalMilliseconds);</span><br><span class="line">            String authToken = <span class="string">&quot;????&quot;</span> <span class="comment">// your old session key</span></span><br><span class="line"></span><br><span class="line">            <span class="built_in">string</span>[] strArray = authToken.Split(<span class="keyword">new</span> <span class="built_in">char</span>[] &#123; <span class="string">&#x27;:&#x27;</span> &#125;);</span><br><span class="line">            <span class="built_in">string</span> issueTo = strArray[<span class="number">0</span>];</span><br><span class="line">            <span class="built_in">string</span> encodedSecretKey = strArray[<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">            <span class="built_in">string</span> str2 = <span class="built_in">string</span> .Format(<span class="string">&quot;iat: &#123;1&#125;\n&quot;</span>, issuedTo, timestamp);</span><br><span class="line">            <span class="built_in">string</span> str3 = Convert .ToBase64String(Encoding.UTF8.GetBytes(str2));</span><br><span class="line">            <span class="built_in">string</span> str4 = <span class="built_in">string</span> .Empty;</span><br><span class="line">            <span class="built_in">string</span> str5 = str3 + <span class="string">&quot;.&quot;</span> + str4;</span><br><span class="line"></span><br><span class="line">            <span class="built_in">byte</span>[] key = Convert .FromBase64String(encodedSecretKey);</span><br><span class="line"></span><br><span class="line">            <span class="built_in">string</span> str6 = Convert.ToBase64String(LINE.Service.YamlWebToken .HmacAlgorithm.CreateInstance(LINE.Service.YamlWebToken.DEFAULT_ALOGORITHM.Name, key).ComputeHash(Encoding.UTF8.GetBytes(str5)));</span><br><span class="line"></span><br><span class="line">            String str = str5 + <span class="string">&quot;.&quot;</span> + str6;  <span class="comment">// base64(issuedTo) + &#x27;..&#x27; + Hmac(SecretKey)</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Author: <a target="_blank" rel="noopener" href="http://carpedm20.github.io/">carpedm20</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/reverse-engineering/" rel="tag"># reverse engineering</a>
+              <a href="/tags/carpedm20/" rel="tag"># carpedm20</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2015/02/25/PEDA-Introduction-Installation/" rel="next" title="PEDA - Introduction && Installation">
+                  PEDA - Introduction && Installation <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HeXA</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

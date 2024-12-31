@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hexa-unist.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.11.1","exturl":false,"sidebar":{"position":"left","display":"remove","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="많은 양의 활동보고서를 일일히 수정해서 쓰는 것에 불편함을 느껴, 날짜&#x2F;활동내용&#x2F;참가자 명단 등을 입력하면 자동으로 보고서를 만들어주는 사이트를 만들었습니다.     먼저, 다음과 같이 내용을 작성하고 사진을 업로드 합니다.그 후 Upload 버튼을 누르면,     위 사진처럼 파일을 다운받을 수 있게 됩니다.     위에 적었던 내용들이">
+<meta property="og:type" content="article">
+<meta property="og:title" content="동아리 활동 내역서 자동 생성 사이트">
+<meta property="og:url" content="http://hexa-unist.github.io/2015/02/27/club-auto-system/index.html">
+<meta property="og:site_name" content="HeXA">
+<meta property="og:description" content="많은 양의 활동보고서를 일일히 수정해서 쓰는 것에 불편함을 느껴, 날짜&#x2F;활동내용&#x2F;참가자 명단 등을 입력하면 자동으로 보고서를 만들어주는 사이트를 만들었습니다.     먼저, 다음과 같이 내용을 작성하고 사진을 업로드 합니다.그 후 Upload 버튼을 누르면,     위 사진처럼 파일을 다운받을 수 있게 됩니다.     위에 적었던 내용들이">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://hexa-unist.github.io/img/club-auto-system1.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/club-auto-system2.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/club-auto-system3.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/club-auto-system4.png">
+<meta property="article:published_time" content="2015-02-27T12:15:00.000Z">
+<meta property="article:modified_time" content="2024-12-31T03:10:03.438Z">
+<meta property="article:author" content="HeXA">
+<meta property="article:tag" content="web">
+<meta property="article:tag" content="development">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://hexa-unist.github.io/img/club-auto-system1.png">
+
+
+<link rel="canonical" href="http://hexa-unist.github.io/2015/02/27/club-auto-system/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://hexa-unist.github.io/2015/02/27/club-auto-system/","path":"2015/02/27/club-auto-system/","title":"동아리 활동 내역서 자동 생성 사이트"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>동아리 활동 내역서 자동 생성 사이트 | HeXA</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">HeXA</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-circle-info fa-fw"></i>About</a></li><li class="menu-item menu-item-members"><a href="/members/" rel="section"><i class="fa fa-user fa-fw"></i>Members</a></li><li class="menu-item menu-item-seminar"><a href="/seminar/" rel="section"><i class="fa fa-microphone fa-fw"></i>Seminar</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://hexa-unist.github.io/2015/02/27/club-auto-system/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="HeXA">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HeXA">
+      <meta itemprop="description" content="UNIST Computer Club. Hacker's eXciting Academy">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="동아리 활동 내역서 자동 생성 사이트 | HeXA">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          동아리 활동 내역서 자동 생성 사이트
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2015-02-27 21:15:00" itemprop="dateCreated datePublished" datetime="2015-02-27T21:15:00+09:00">2015-02-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-12-31 12:10:03" itemprop="dateModified" datetime="2024-12-31T12:10:03+09:00">2024-12-31</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>많은 양의 활동보고서를 일일히 수정해서 쓰는 것에 불편함을 느껴, 날짜&#x2F;활동내용&#x2F;참가자 명단 등을 입력하면 자동으로 보고서를 만들어주는 사이트를 만들었습니다.</p>
+<p align="center"> <img src="/img/club-auto-system1.png" style="width: 70%;"/> </p>
+
+<p>먼저, 다음과 같이 내용을 작성하고 사진을 업로드 합니다.<br>그 후 Upload 버튼을 누르면,</p>
+<p align="center"> <img src="/img/club-auto-system2.png" style="width: 60%;"/> </p>
+
+<p>위 사진처럼 파일을 다운받을 수 있게 됩니다.</p>
+<p align="center"> <img src="/img/club-auto-system3.png" style="width: 60%;"/> </p>
+
+<p>위에 적었던 내용들이 다음과 같이 폼에 들어가 작성되며, 사진 또한 크기에 맞춰서 들어갑니다.</p>
+<p align="center"> <img src="/img/club-auto-system4.png" style="width: 60%;"/> </p>
+
+<p>출결 여부를 체크하지 않은 사람은 불참으로 기록되며, 출석 인원에서 제외됩니다.<br>파이썬으로 작성했으며, Flask를 사용했습니다.</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/fresh-mango-tree/Activity-Report-Factory">code</a></p>
+<p>작성자: <a target="_blank" rel="noopener" href="http://freshmangotree.tistory.com/">fresh-mango-tree</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/web/" rel="tag"># web</a>
+              <a href="/tags/development/" rel="tag"># development</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2015/02/26/PEDA-How-To-Use/" rel="prev" title="PEDA - How To Use">
+                  <i class="fa fa-chevron-left"></i> PEDA - How To Use
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2015/04/06/Codegate-2015-systemshock/" rel="next" title="Codegate 2015 - systemshock">
+                  Codegate 2015 - systemshock <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HeXA</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

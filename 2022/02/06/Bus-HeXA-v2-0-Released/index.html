@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hexa-unist.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.11.1","exturl":false,"sidebar":{"position":"left","display":"remove","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="안녕하세요, HeXA Bus V.2 개발팀원인 HeXA 8기 심재환이라고 합니다. 저희 HeXA Bus V.2는 기존에 있던 HeXA Bus가 울산시의 API 변경으로 인하여 운영이 중지됨에 따라 새로운 기능을 추가하여 더욱 깔끔한 디자인과 함께 리뉴얼하기 위해 HeXA 동아리원들과 함께 시작하게 된 프로젝트입니다. 개발은 Python Django를 주로">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bus HeXA v2.0 Released">
+<meta property="og:url" content="http://hexa-unist.github.io/2022/02/06/Bus-HeXA-v2-0-Released/index.html">
+<meta property="og:site_name" content="HeXA">
+<meta property="og:description" content="안녕하세요, HeXA Bus V.2 개발팀원인 HeXA 8기 심재환이라고 합니다. 저희 HeXA Bus V.2는 기존에 있던 HeXA Bus가 울산시의 API 변경으로 인하여 운영이 중지됨에 따라 새로운 기능을 추가하여 더욱 깔끔한 디자인과 함께 리뉴얼하기 위해 HeXA 동아리원들과 함께 시작하게 된 프로젝트입니다. 개발은 Python Django를 주로">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-06T09:44:02.000Z">
+<meta property="article:modified_time" content="2024-12-31T03:10:03.426Z">
+<meta property="article:author" content="HeXA">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://hexa-unist.github.io/2022/02/06/Bus-HeXA-v2-0-Released/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://hexa-unist.github.io/2022/02/06/Bus-HeXA-v2-0-Released/","path":"2022/02/06/Bus-HeXA-v2-0-Released/","title":"Bus HeXA v2.0 Released"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Bus HeXA v2.0 Released | HeXA</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">HeXA</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-circle-info fa-fw"></i>About</a></li><li class="menu-item menu-item-members"><a href="/members/" rel="section"><i class="fa fa-user fa-fw"></i>Members</a></li><li class="menu-item menu-item-seminar"><a href="/seminar/" rel="section"><i class="fa fa-microphone fa-fw"></i>Seminar</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://hexa-unist.github.io/2022/02/06/Bus-HeXA-v2-0-Released/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="HeXA">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HeXA">
+      <meta itemprop="description" content="UNIST Computer Club. Hacker's eXciting Academy">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Bus HeXA v2.0 Released | HeXA">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Bus HeXA v2.0 Released
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-02-06 18:44:02" itemprop="dateCreated datePublished" datetime="2022-02-06T18:44:02+09:00">2022-02-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-12-31 12:10:03" itemprop="dateModified" datetime="2024-12-31T12:10:03+09:00">2024-12-31</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>안녕하세요, HeXA Bus V.2 개발팀원인 HeXA 8기 심재환이라고 합니다.</p>
+<p>저희 HeXA Bus V.2는 기존에 있던 HeXA Bus가 울산시의 API 변경으로 인하여 운영이 중지됨에 따라</p>
+<p>새로운 기능을 추가하여 더욱 깔끔한 디자인과 함께 리뉴얼하기 위해 HeXA 동아리원들과 함께 시작하게 된 프로젝트입니다.</p>
+<p>개발은 Python Django를 주로 하여 진행중입니다.</p>
+<p>현재 사용 가능한 기능으로는</p>
+<ul>
+<li>버스의 방향에 따라 다음으로 유니스트 정류장에서 출발하는 버스의 위치와 번호 보기</li>
+<li>각 버스 노선의 주요 경유역, 전체 노선, 시간표 그리고 운행중인 각각 버스의 위치와 번호 보기</li>
+<li>일정 시각 이후에 출발하는 버스 찾기<br>가 있으며, 이후로도 여러 기능이 추가될 예정입니다.</li>
+</ul>
+<p>현재 <a target="_blank" rel="noopener" href="https://bus.hexa.pro/">bus.hexa.pro</a>에서 운영중이니 많은 관심 부탁드립니다!</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/08/21/SSTF-2021/" rel="prev" title="SSTF 2021">
+                  <i class="fa fa-chevron-left"></i> SSTF 2021
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HeXA</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

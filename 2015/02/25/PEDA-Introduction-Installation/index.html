@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hexa-unist.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.11.1","exturl":false,"sidebar":{"position":"left","display":"remove","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="IntroductionPEDA는 Python Exploit Development Assistance for GDB 의 줄임말로 말 그대로 리눅스에서 디버깅할 때 흔히 사용하는 gdb에 exploit을 할때 도움이 되는  다양한 기능을 추가시켜주는 gdb python script 입니다. 밋밋한 gdb 만 쓰다 PEDA를 적용하여 사용해보시면 색도 알록달록하">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PEDA - Introduction &amp;&amp; Installation">
+<meta property="og:url" content="http://hexa-unist.github.io/2015/02/25/PEDA-Introduction-Installation/index.html">
+<meta property="og:site_name" content="HeXA">
+<meta property="og:description" content="IntroductionPEDA는 Python Exploit Development Assistance for GDB 의 줄임말로 말 그대로 리눅스에서 디버깅할 때 흔히 사용하는 gdb에 exploit을 할때 도움이 되는  다양한 기능을 추가시켜주는 gdb python script 입니다. 밋밋한 gdb 만 쓰다 PEDA를 적용하여 사용해보시면 색도 알록달록하">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://hexa-unist.github.io/img/peda.png">
+<meta property="article:published_time" content="2015-02-25T14:33:00.000Z">
+<meta property="article:modified_time" content="2024-12-31T03:10:03.433Z">
+<meta property="article:author" content="HeXA">
+<meta property="article:tag" content="l34p">
+<meta property="article:tag" content="exploit">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://hexa-unist.github.io/img/peda.png">
+
+
+<link rel="canonical" href="http://hexa-unist.github.io/2015/02/25/PEDA-Introduction-Installation/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://hexa-unist.github.io/2015/02/25/PEDA-Introduction-Installation/","path":"2015/02/25/PEDA-Introduction-Installation/","title":"PEDA - Introduction && Installation"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>PEDA - Introduction && Installation | HeXA</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">HeXA</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-circle-info fa-fw"></i>About</a></li><li class="menu-item menu-item-members"><a href="/members/" rel="section"><i class="fa fa-user fa-fw"></i>Members</a></li><li class="menu-item menu-item-seminar"><a href="/seminar/" rel="section"><i class="fa fa-microphone fa-fw"></i>Seminar</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://hexa-unist.github.io/2015/02/25/PEDA-Introduction-Installation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="HeXA">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HeXA">
+      <meta itemprop="description" content="UNIST Computer Club. Hacker's eXciting Academy">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="PEDA - Introduction && Installation | HeXA">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PEDA - Introduction && Installation
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2015-02-25 23:33:00" itemprop="dateCreated datePublished" datetime="2015-02-25T23:33:00+09:00">2015-02-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-12-31 12:10:03" itemprop="dateModified" datetime="2024-12-31T12:10:03+09:00">2024-12-31</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>PEDA는 Python Exploit Development Assistance for GDB 의 줄임말로 말 그대로 리눅스에서 디버깅할 때 흔히 사용하는 gdb에 exploit을 할때 도움이 되는  다양한 기능을 추가시켜주는 gdb python script 입니다.</p>
+<p>밋밋한 gdb 만 쓰다 PEDA를 적용하여 사용해보시면 색도 알록달록하고 강력한 기능에 신세계를 경험하실 수 있을겁니다!</p>
+<p>PEDA에 대한 자세한 내용은 아래의 URL에서 확인하실 수 있습니다.</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/longld/peda">https://github.com/longld/peda</a></li>
+<li><a target="_blank" rel="noopener" href="http://ropshell.com/peda/">http://ropshell.com/peda/</a></li>
+</ol>
+<h2 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h2><p>설치 방법 및 적용 방법은 매우 간단합니다. (사실 ubuntu 최신 버전과 같이 gdb의 python 버전이 3.x 인 경우에는 쬐에에끔… 복잡할 수 있습니다.)</p>
+<p>그래서 우선! 현재 설치하려고 하는 환경의 gdb가 어떤 버전의 python을 사용하고 있는지 확인해 보도록 하겠습니다.</p>
+<p>gdb를 키고 python print(sys.version) 를 입력하여 python 버전을 확인합니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ gdb -q</span><br><span class="line">$ (gdb) python <span class="built_in">print</span>(sys.version)</span><br></pre></td></tr></table></figure>
+
+<p>여기서 결과가 2.7.3 이런식으로 2 버전대로 나온다면 ,<br>PEDA파일을 받아오고 .gdbinit에 PEDA파일을 불러오는 내용만 추가해 주시면 됩니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/longld/peda.git ~/peda</span><br><span class="line">$ <span class="built_in">echo</span> <span class="string">&quot;source ~/peda/peda.py&quot;</span> &gt;&gt; ~/.gdbinit</span><br></pre></td></tr></table></figure>
+
+<p>저 두줄만 입력하여 주시면 PEDA 설치와 설정이 끝나게 됩니다.</p>
+<p>하지만… 결과가 3.4.0 이런식으로 3 버전대로 나온다면, 위 두줄의 명령어를 실행하여 PEDA를 설치한 다음 gdb를 2버전대의 python으로 새로 컴파일 해주어야 합니다. 그 과정은 아래와 같습니다.</p>
+<ol>
+<li>현재 설치되어 있는 gdb를 지워줍니다.<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get remove gdb</span><br></pre></td></tr></table></figure></li>
+<li>gdb 소스를 받아옵니다.<br><a target="_blank" rel="noopener" href="http://ftp.gnu.org/gnu/gdb/">http://ftp.gnu.org/gnu/gdb/</a> 여기로 들어가셔서 gdb-7.8.2.tar.gz 를 받아주시면 됩니다.<br>( 2015년 2월 25일 현재 7.9버전까지 있으나 7.9버전에는 오류가 발생하여 잘 안되는것 같습니다. ) </li>
+<li>다운로드 받은 gdb-7.8.2.tar.gz 의 압축을 풀어줍니다.<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tar -xvf <span class="string">&quot;다운로드 받은 경로&quot;</span>/gdb-7.8.2.tar.gz</span><br></pre></td></tr></table></figure></li>
+<li>python 2.7-dev 패키지 다운로드<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install python2.7-dev</span><br></pre></td></tr></table></figure></li>
+<li>libncurses5-dev 패키지 다운로드<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install libncurses5-dev</span><br></pre></td></tr></table></figure></li>
+<li>압축해제한 gdb소스가 있는 경로로 이동하여 아래의 내용을 입력합니다.<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ./configure --with-python=python2</span><br><span class="line">$ make</span><br><span class="line">$ sudo make install  </span><br></pre></td></tr></table></figure></li>
+</ol>
+<p align="center"> <img src="/img/peda.png" style="width: 40%;"/> </p>
+
+<p>여기까지 따라오시느라 수고 많으셨습니다!<br>제대로 설치가 되었다면 아래와 같은 화면을 볼 수 있습니다.</p>
+<p>작성자: <a target="_blank" rel="noopener" href="https://github.com/L34p/">l34p</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/l34p/" rel="tag"># l34p</a>
+              <a href="/tags/exploit/" rel="tag"># exploit</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2013/09/05/LINE-protocol-analysis/" rel="prev" title="LINE(라인) protocol analysis">
+                  <i class="fa fa-chevron-left"></i> LINE(라인) protocol analysis
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2015/02/26/PEDA-How-To-Use/" rel="next" title="PEDA - How To Use">
+                  PEDA - How To Use <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HeXA</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

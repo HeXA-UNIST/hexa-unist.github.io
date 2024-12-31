@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hexa-unist.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.11.1","exturl":false,"sidebar":{"position":"left","display":"remove","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="BeginningFirst, I think many people know that a html file uploaded on dropbox shows with rendering, and without any escaping. It means that, if we write down a JavaScript code to the html file, we can">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XSS subdomain escape wirte up (on Dropbox)">
+<meta property="og:url" content="http://hexa-unist.github.io/2015/08/04/XSS-subdomain-escape-wirte-up-on-Dropbox/index.html">
+<meta property="og:site_name" content="HeXA">
+<meta property="og:description" content="BeginningFirst, I think many people know that a html file uploaded on dropbox shows with rendering, and without any escaping. It means that, if we write down a JavaScript code to the html file, we can">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://hexa-unist.github.io/img/dropbox1.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/dropbox2.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/dropbox3.png">
+<meta property="og:image" content="http://hexa-unist.github.io/img/dropbox4.png">
+<meta property="article:published_time" content="2015-08-04T13:57:30.000Z">
+<meta property="article:modified_time" content="2024-12-31T03:10:03.437Z">
+<meta property="article:author" content="HeXA">
+<meta property="article:tag" content="exploit">
+<meta property="article:tag" content="Vulnerability">
+<meta property="article:tag" content="tunz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://hexa-unist.github.io/img/dropbox1.png">
+
+
+<link rel="canonical" href="http://hexa-unist.github.io/2015/08/04/XSS-subdomain-escape-wirte-up-on-Dropbox/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://hexa-unist.github.io/2015/08/04/XSS-subdomain-escape-wirte-up-on-Dropbox/","path":"2015/08/04/XSS-subdomain-escape-wirte-up-on-Dropbox/","title":"XSS subdomain escape wirte up (on Dropbox)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>XSS subdomain escape wirte up (on Dropbox) | HeXA</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">HeXA</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-circle-info fa-fw"></i>About</a></li><li class="menu-item menu-item-members"><a href="/members/" rel="section"><i class="fa fa-user fa-fw"></i>Members</a></li><li class="menu-item menu-item-seminar"><a href="/seminar/" rel="section"><i class="fa fa-microphone fa-fw"></i>Seminar</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://hexa-unist.github.io/2015/08/04/XSS-subdomain-escape-wirte-up-on-Dropbox/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="HeXA">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HeXA">
+      <meta itemprop="description" content="UNIST Computer Club. Hacker's eXciting Academy">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="XSS subdomain escape wirte up (on Dropbox) | HeXA">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          XSS subdomain escape wirte up (on Dropbox)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2015-08-04 22:57:30" itemprop="dateCreated datePublished" datetime="2015-08-04T22:57:30+09:00">2015-08-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-12-31 12:10:03" itemprop="dateModified" datetime="2024-12-31T12:10:03+09:00">2024-12-31</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="Beginning"><a href="#Beginning" class="headerlink" title="Beginning"></a>Beginning</h2><p>First, I think many people know that a html file uploaded on dropbox shows with rendering, and without any escaping. It means that, if we write down a JavaScript code to the html file, we can easily execute a JavaScript code on the html page without any problem. But, the script is executed on a sandbox domain, dl-web.dropbox.com. The important session is a httponly cookie, so we can’t easily steal the user session.</p>
+<p align="center"> <img src="/img/dropbox1.png" style="width: 60%;"/> </p>
+
+<p>In this situation, I can set any cookie on dropbox.com domain (not <a target="_blank" rel="noopener" href="http://www.dropbox.com/">www.dropbox.com</a>). It means that it may be able to influence on <a target="_blank" rel="noopener" href="http://www.dropbox.com/">www.dropbox.com</a>. If main dropbox page do something using the cookie on dropbox.com, then maybe I can do something on <a target="_blank" rel="noopener" href="http://www.dropbox.com/">www.dropbox.com</a> </p>
+<h2 id="Vulnerability"><a href="#Vulnerability" class="headerlink" title="Vulnerability"></a>Vulnerability</h2><p>I found a some nice thing, Flash. After cookies, “flash” and “bang”, are given, dropbox page draws a pop-up box which is containing a text in “flash”. But, “bang” was a problem. It seems like a hmac of “flash”. So, I need to find “bang” value of my custom “flash”.</p>
+<p>I also found a function which unlinks device in security setting page. If I unlink a some device, then it shows me a flash message, which is containing device name. So, I set the device name (iphone name) to a XSS text, and I unlinked it. </p>
+<h2 id="Exploit"><a href="#Exploit" class="headerlink" title="Exploit"></a>Exploit</h2><p><img src="/img/dropbox2.png"></p>
+<p>Now, I can set “flash” and “bang” value to any text.</p>
+<p><img src="/img/dropbox3.png"></p>
+<p>Then, set the malicious cookie in a html. After that, make victim to move page to <a target="_blank" rel="noopener" href="http://www.dropbox.com/">www.dropbox.com</a> (trigger flash message).</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">cookie</span>=<span class="string">&quot;bang=QUFEZGthYS1CaTNfWUpYcDUwdjNxemVHSHlhSHJkU3BEdnhKRUxOZVZ3b2ZoUQ%3D%3D;</span></span><br><span class="line"><span class="string">Domain=dropbox.com; Path=/;&quot;</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">cookie</span>=<span class="string">&quot;flash=b2s6PGltZyBzcmM9eCBvbmVycm9yPWFsZXJ0KGRvY3VtZW50LmRvbWFpbik%2BIHVubGlua</span></span><br><span class="line"><span class="string">2VkIHN1Y2Nlc3NmdWxseS4%3D; Domain=dropbox.com; Path=/&quot;</span>;</span><br><span class="line">location.<span class="property">href</span>=<span class="string">&quot;https://dropbox.com/forgot&quot;</span>;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>There is a CSP. But, the script is executed on IE or Safari.</p>
+<p align="center"> <img src="/img/dropbox4.png" style="width: 80%;"/> </p>
+
+<p>+) Currently, common XSS on dl-web.dropbox.com is out of scope for bounty.<br>+) Now, I think a flash depends on only one session. </p>
+<p>2015&#x2F;05&#x2F;02 Fixed, A bounty of $1,331</p>
+<p>Author: <a target="_blank" rel="noopener" href="http://blog.tunz.kr/">tunz</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/exploit/" rel="tag"># exploit</a>
+              <a href="/tags/Vulnerability/" rel="tag"># Vulnerability</a>
+              <a href="/tags/tunz/" rel="tag"># tunz</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2015/04/06/Codegate-2015-systemshock/" rel="prev" title="Codegate 2015 - systemshock">
+                  <i class="fa fa-chevron-left"></i> Codegate 2015 - systemshock
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2016/11/28/HeXA-CTF-2016-Epilogue/" rel="next" title="HeXA CTF 2016 Epilogue">
+                  HeXA CTF 2016 Epilogue <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HeXA</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
